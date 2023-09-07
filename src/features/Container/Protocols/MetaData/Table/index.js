@@ -1,16 +1,28 @@
 /* eslint-disable */
+import React, { useState, useEffect } from 'react';
 import EllipsisVerticalIcon from 'apollo-react-icons/EllipsisVertical';
+import { v4 as uuidv4 } from 'uuid';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Tooltip from 'apollo-react/components/Tooltip';
 import Table from 'apollo-react/components/Table';
-import React, { useState, useEffect } from 'react';
+import { userId } from '../../../../../store/userDetails';
 import Button from 'apollo-react/components/Button';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
+import { deleteModalLabels } from '../Assessment/Assessment';
+import RestricModal from '../Modal';
+import { useSelector } from 'react-redux';
 
 const ActionCell = ({ row }) => {
-  const { id, onRowEdit, onRowSave, editMode, onCancel, editedRow, onDelete } =
-    row;
+  const {
+    id,
+    onRowEdit,
+    onRowSave,
+    editMode,
+    onCancel,
+    editedRow,
+    handleDelete,
+  } = row;
   const menuItems = [
     {
       text: 'Edit',
@@ -18,7 +30,7 @@ const ActionCell = ({ row }) => {
     },
     {
       text: 'Delete',
-      onClick: () => onDelete(id),
+      onClick: () => handleDelete(id),
     },
   ];
 
@@ -81,7 +93,7 @@ const makeEditableAutocompleteCell = (options) =>
               {...fieldStyles}
             >
               {options.map((option) => (
-                <MenuItem key={option.label} value={option.label}>
+                <MenuItem value={option.label} key={uuidv4()}>
                   {option.label}
                 </MenuItem>
               ))}
@@ -119,7 +131,7 @@ const getColumns = (columns, editEnabled, page) => {
       customCell:
         element.key === 'assessment_text' || element.key === 'visit_label'
           ? AllCell
-          : makeEditableAutocompleteCell(element?.possible_values || []),
+          : makeEditableAutocompleteCell(element?.possible_values.values || []),
       fixedWidth: true,
       frozen:
         element.key === 'assessment_text' || element.key === 'visit_label',
@@ -153,10 +165,13 @@ export default function AssessmentVisitTable(props) {
     handleTableChange,
     page,
   } = props;
+  const userId1 = useSelector(userId);
   const [columnData, setColumndata] = useState([]);
   const [rows, setRows] = useState([]);
   const [editedRow, setEditedRow] = useState({});
   const [deletedRows, setDeletedRows] = useState([]);
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
 
   useEffect(() => {
     if (datafetch) {
@@ -186,15 +201,16 @@ export default function AssessmentVisitTable(props) {
   };
 
   const onRowSave = () => {
-    console.log('onRowSave');
     const updatedRows = rows.map((row) => {
       if (row.id === editedRow.id) {
         let obj = { ...editedRow };
         if (obj?.status === 'added') {
+          obj.user_id = userId1.substring(1);
           delete obj.status;
         }
         if (obj?.operation !== 'create') {
           obj.operation = 'update';
+          obj.user_id = userId1.substring(1);
         }
         return obj;
       }
@@ -202,32 +218,22 @@ export default function AssessmentVisitTable(props) {
     });
     setRows(updatedRows);
     handleTableChange(updatedRows);
-
-    // const index = rowsUpdated.findIndex((item) => item.id === editedRow.id);
-
-    // if (index > -1) {
-    //   rowU;
-    // }
-    // let obj = { ...editedRow };
-    // if (obj?.operation !== 'create') {
-    //   obj.operation = 'update';
-    // }
-    // setRowsUpdated([...rowsUpdated, obj]);
     setEditedRow({});
   };
 
   const onCancel = () => {
-    console.log('onCancel');
     setEditedRow({});
   };
 
-  const onDelete = (id) => {
-    console.log('onDelete');
+  const onDelete = () => {
+    setDeleteModal(false);
+    const id = deleteId;
     const obj = rows.find((row) => {
       if (row.id === id) {
         if (row?.operation === 'create') return null;
         else {
           row.operation = 'delete';
+          row.user_id = userId1.substring(1);
           return row;
         }
       }
@@ -242,12 +248,27 @@ export default function AssessmentVisitTable(props) {
   };
 
   const editRow = (key, value) => {
-    console.log('editRow');
     setEditedRow({ ...editedRow, [key]: value });
+  };
+  const handleCloseModal = () => {
+    setDeleteModal(false);
+  };
+  const handleDelete = (id) => {
+    setDeleteId(id);
+    setDeleteModal(true);
   };
 
   return (
     <div className="assessment-table-container">
+      <RestricModal
+        open={deleteModal}
+        setOpen={setDeleteModal}
+        buttonOne={deleteModalLabels.buttonOne}
+        buttonTwo={deleteModalLabels.buttonTwo}
+        title={deleteModalLabels.title}
+        buttonOneHandler={handleCloseModal}
+        buttonTwoHandler={onDelete}
+      />
       {columnData.length && rows.length && (
         <Table
           columns={columnData}
@@ -260,7 +281,7 @@ export default function AssessmentVisitTable(props) {
               onRowEdit,
               onRowSave,
               onCancel,
-              onDelete,
+              handleDelete,
               editRow,
               editMode: editedRow?.id === row.id,
               editedRow,
@@ -269,8 +290,7 @@ export default function AssessmentVisitTable(props) {
           rowId="id"
           hidePagination
           hasScroll
-          maxHeight={fullView ? '78vh' : '60vh'}
-          // columnSettings={{ enabled: settings, frozenColumnsEnabled: true }}
+          maxHeight={fullView ? '72vh' : '60vh'}
           className="abc"
         />
       )}

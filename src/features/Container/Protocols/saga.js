@@ -1151,6 +1151,8 @@ export function* postAssessments(action) {
         payload: { docId },
       });
       toast.success(response.data.response);
+    } else {
+      toast.error('Data insertion failed');
     }
   } catch (error) {
     toast.error('Data insertion failed');
@@ -1206,13 +1208,14 @@ export function* postVisits(action) {
       headers: jsonContentHeader,
     };
     const response = yield call(httpCall, config);
-    console.log('response', response);
     if (response.success) {
       yield put({
         type: 'GET_VISITS',
         payload: { docId },
       });
       toast.success(response.data.response);
+    } else {
+      toast.error('Data insertion failed');
     }
   } catch (error) {
     toast.error('Data insertion failed');

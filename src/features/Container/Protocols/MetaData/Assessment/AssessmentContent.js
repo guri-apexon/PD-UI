@@ -1,5 +1,6 @@
 /* eslint-disable */
 import React, { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
 import Plus from 'apollo-react-icons/Plus';
@@ -90,6 +91,7 @@ const AssessmentContent = ({
           >
             {dropDownData.map((elem) => (
               <MenuItem
+                key={uuidv4()}
                 value={elem.id}
                 children={
                   <span

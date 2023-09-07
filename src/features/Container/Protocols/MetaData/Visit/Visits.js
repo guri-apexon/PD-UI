@@ -4,12 +4,13 @@ import PropTypes from 'prop-types';
 import Accordion from 'apollo-react/components/Accordion';
 import AccordionDetails from 'apollo-react/components/AccordionDetails';
 import AccordionSummary from 'apollo-react/components/AccordionSummary';
+import Popover from 'apollo-react/components/Popover';
 import Typography from 'apollo-react/components/Typography';
 import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
 import Undo from 'apollo-react-icons/Undo';
-import Expand from 'apollo-react-icons/Expand';
+import OpenNew from 'apollo-react-icons/OpenNew';
 import Modal from 'apollo-react/components/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 import { visitData } from '../../protocolSlice';
@@ -17,7 +18,7 @@ import VisitContent from './VisitContent';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import RestricModal from '../Modal';
-import { discardModal } from '../Assessment/Assessment';
+import { discardModalLabels, saveModalLabels } from '../Assessment/Assessment';
 
 const visitTimeColumns = [
   {
@@ -99,7 +100,10 @@ const Visits = ({ docId }) => {
   const [showSettings, setShowSetting] = useState(false);
   const [columnArray, setColumnArray] = useState([]);
   const [visitColumns, setVisitColumns] = useState(visitTimeColumns);
-  const [restricModal, setRestrictModal] = useState(false);
+  const [discardModal, setDiscardModal] = useState(false);
+  const [saveModal, setSaveModal] = useState(false);
+  const [openAudit, setOpenAudit] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
     visitsData?.data?.columns.length && handleColumns();
@@ -109,10 +113,6 @@ const Visits = ({ docId }) => {
     let finalColumns = cloneDeep(visitsData.data.columns);
 
     for (let i = 0; i < finalColumns.length; i++) {
-      console.log(
-        finalColumns[i].key,
-        finalColumns[i].key.includes('timepoint'),
-      );
       if (finalColumns[i].key.includes('timepoint')) {
         finalColumns[i].hidden = true;
       } else {
@@ -127,8 +127,9 @@ const Visits = ({ docId }) => {
   }, []);
 
   const getFinalDataFromTable = (data) => {
-    console.log('final data', data);
     setDataFetch(false);
+    setEditEnabled(false);
+    setShowModal(false);
     dispatch({ type: 'POST_VISIT', payload: { docId, body: data } });
   };
 
@@ -173,16 +174,17 @@ const Visits = ({ docId }) => {
 
   const handleSaveData = (e) => {
     e.stopPropagation();
-    setEditEnabled(false);
-    setDataFetch(true);
+    setSaveModal(true);
   };
 
   const handleUndo = (e) => {
     e.stopPropagation();
+    setDiscardModal(true);
   };
   const handleEdit = (e) => {
     e.stopPropagation();
     setEditEnabled(true);
+    setExpanded(true);
   };
   const handleExpand = (e) => {
     e.stopPropagation();
@@ -228,31 +230,51 @@ const Visits = ({ docId }) => {
     setColumnArray(finalColumns);
   };
   const handleDiscard = () => {
-    setAssesmentData();
-    setRestrictModal(false);
+    setVisitData();
+    setDiscardModal(false);
     setEditEnabled(false);
   };
-  const handleContinue = () => {
-    setRestrictModal(false);
+  const handleCloseModal = () => {
+    setDiscardModal(false);
+    setSaveModal(false);
+  };
+
+  const handleModalSave = () => {
+    setDataFetch(true);
+    setEditEnabled(false);
+    setSaveModal(false);
+  };
+  const handleAudit = (e) => {
+    e.stopPropagation();
+    setOpenAudit(e.currentTarget);
   };
 
   return (
     <div>
       <RestricModal
-        open={restricModal}
-        setOpen={setRestrictModal}
-        buttonOne={discardModal.buttonOne}
-        buttonTwo={discardModal.buttonTwo}
-        title={discardModal.title}
-        buttonOneHandler={handleContinue}
+        open={discardModal}
+        setOpen={setDiscardModal}
+        buttonOne={discardModalLabels.buttonOne}
+        buttonTwo={discardModalLabels.buttonTwo}
+        title={discardModalLabels.title}
+        buttonOneHandler={handleCloseModal}
         buttonTwoHandler={handleDiscard}
+      />
+      <RestricModal
+        open={saveModal}
+        setOpen={setSaveModal}
+        buttonOne={saveModalLabels.buttonOne}
+        buttonTwo={saveModalLabels.buttonTwo}
+        title={saveModalLabels.title}
+        buttonOneHandler={handleCloseModal}
+        buttonTwoHandler={handleModalSave}
       />
       <Modal
         className="full-view-modal"
         open={showModal}
         onClose={() => setShowModal(false)}
         buttonProps={[]}
-        title="Assessment"
+        title="Visit Schedule"
         hideButtons={true}
       >
         {validData.length && columnArray.length && (
@@ -277,13 +299,13 @@ const Visits = ({ docId }) => {
           />
         )}
       </Modal>
-      <Accordion>
+      <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <AccordionSummary>
           <div className="accordion_summary_container">
             <Typography>Visit Schedule</Typography>
             <div className="metadata-flex">
-              <span data-testId="eyeIcon" role="presentation">
-                <Expand
+              <span data-testId="expand" role="presentation">
+                <OpenNew
                   style={{ paddingRight: '10px' }}
                   onClick={(e) => {
                     handleExpand(e);
@@ -291,7 +313,12 @@ const Visits = ({ docId }) => {
                 />
               </span>
               <span data-testId="eyeIcon" role="presentation">
-                <EyeShow style={{ paddingRight: '10px' }} />
+                <EyeShow
+                  style={{ paddingRight: '10px' }}
+                  onClick={(e) => {
+                    handleAudit(e);
+                  }}
+                />
               </span>
               {!isEditEnabled ? (
                 <span data-testId="metadatapencil">
@@ -352,6 +379,29 @@ const Visits = ({ docId }) => {
           )}
         </AccordionDetails>
       </Accordion>
+      <Popover
+        data-testId="metadata-popover"
+        open={!!openAudit}
+        anchorEl={openAudit}
+        onClose={() => setOpenAudit(null)}
+      >
+        <div className="auditPopover">
+          <div className="textContainer">
+            <div className="audit-info-line">
+              <label>Last Updated Date : </label>
+              <span>
+                {visitsData?.data?.field_audit_info?.last_updated || '...'}
+              </span>
+            </div>
+            <div>
+              <label>Last Edited By : </label>
+              <span>
+                {visitsData?.data?.field_audit_info?.last_edited_by || '...'}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Popover>
     </div>
   );
 };
