@@ -10,7 +10,7 @@ import Pencil from 'apollo-react-icons/Pencil';
 import EyeShow from 'apollo-react-icons/EyeShow';
 import Save from 'apollo-react-icons/Save';
 import Undo from 'apollo-react-icons/Undo';
-import Expand from 'apollo-react-icons/Expand';
+import OpenNew from 'apollo-react-icons/OpenNew';
 import Modal from 'apollo-react/components/Modal';
 import { assessmentData } from '../../protocolSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -243,7 +243,7 @@ const Assessment = ({ docId }) => {
             <Typography>Assessments</Typography>
             <div className="metadata-flex">
               <span data-testId="expand" role="presentation">
-                <Expand
+                <OpenNew
                   style={{ paddingRight: '10px' }}
                   onClick={(e) => {
                     handleExpand(e);

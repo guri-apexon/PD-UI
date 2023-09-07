@@ -205,12 +205,12 @@ export default function AssessmentVisitTable(props) {
       if (row.id === editedRow.id) {
         let obj = { ...editedRow };
         if (obj?.status === 'added') {
-          // obj.user_id = userId1.substring(1);
+          obj.user_id = userId1.substring(1);
           delete obj.status;
         }
         if (obj?.operation !== 'create') {
           obj.operation = 'update';
-          // obj.user_id = userId1.substring(1);
+          obj.user_id = userId1.substring(1);
         }
         return obj;
       }
@@ -233,7 +233,7 @@ export default function AssessmentVisitTable(props) {
         if (row?.operation === 'create') return null;
         else {
           row.operation = 'delete';
-          // row.user_id = userId1.substring(1);
+          row.user_id = userId1.substring(1);
           return row;
         }
       }
@@ -290,8 +290,7 @@ export default function AssessmentVisitTable(props) {
           rowId="id"
           hidePagination
           hasScroll
-          maxHeight={fullView ? '78vh' : '60vh'}
-          // columnSettings={{ enabled: settings, frozenColumnsEnabled: true }}
+          maxHeight={fullView ? '72vh' : '60vh'}
           className="abc"
         />
       )}
