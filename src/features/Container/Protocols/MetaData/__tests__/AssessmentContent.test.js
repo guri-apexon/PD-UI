@@ -1,8 +1,5 @@
-import {
-  render,
-  fireEvent,
-  screen,
-} from '../../../../../test-utils/test-utils';
+/* eslint-disable */
+import { render, screen } from '../../../../../test-utils/test-utils';
 import AssessmentContent from '../Assessment/AssessmentContent';
 import { contentData, data } from '../__mock__/_assessment.mock_data';
 
