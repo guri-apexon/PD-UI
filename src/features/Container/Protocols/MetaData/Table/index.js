@@ -105,6 +105,8 @@ const makeEditableAutocompleteCell = (options) =>
               value={row.editedRow[key]}
             />
           )
+        ) : row[key] === 'N' ? (
+          <div></div>
         ) : (
           <div
             style={{ width: 100 }}

@@ -56,7 +56,12 @@ const createRowData = (row) => {
 
 const isEmptyObj = (obj) => {
   const isEmpty = Object.values(obj).every((value) => {
-    if (value === null || value === undefined || value === '') {
+    if (
+      value === null ||
+      value === undefined ||
+      value === '' ||
+      value === 'N'
+    ) {
       return true;
     }
     return false;
@@ -64,20 +69,20 @@ const isEmptyObj = (obj) => {
   return isEmpty;
 };
 
-const removeByAttr = function (arr, attr, value) {
-  let i = arr.length;
-  while (i--) {
-    if (
-      arr[i] &&
-      arr[i].hasOwnProperty(attr) &&
-      arguments.length > 2 &&
-      arr[i][attr] === value
-    ) {
-      arr.splice(i, 1);
-    }
-  }
-  return arr;
-};
+// const removeByAttr = function (arr, attr, value) {
+//   let i = arr.length;
+//   while (i--) {
+//     if (
+//       arr[i] &&
+//       arr[i].hasOwnProperty(attr) &&
+//       arguments.length > 2 &&
+//       arr[i][attr] === value
+//     ) {
+//       arr.splice(i, 1);
+//     }
+//   }
+//   return arr;
+// };
 
 const Assessment = ({ docId }) => {
   const dispatch = useDispatch();
@@ -239,39 +244,43 @@ const Assessment = ({ docId }) => {
       </Modal>
       <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <AccordionSummary>
-          <div className="accordion_summary_container">
+          <div
+            className="accordion_summary_container"
+            data-testId="assessment-accordion"
+          >
             <Typography>Assessments</Typography>
-            <div className="metadata-flex">
-              <span data-testId="expand" role="presentation">
-                <OpenNew
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleExpand(e);
-                  }}
-                />
+            <div className="metadata-flex" data-testId="assessment-container">
+              <span
+                data-testId="expand-assessment"
+                role="presentation"
+                onClick={(e) => {
+                  handleExpand(e);
+                }}
+              >
+                <OpenNew style={{ paddingRight: '10px' }} />
               </span>
-              <span data-testId="eyeIcon" role="presentation">
-                <EyeShow
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleAudit(e);
-                  }}
-                />
+              <span
+                data-testId="eyeIcon-assessment"
+                role="presentation"
+                onClick={(e) => {
+                  handleAudit(e);
+                }}
+              >
+                <EyeShow style={{ paddingRight: '10px' }} />
               </span>
               {!isEditEnabled ? (
-                <span data-testId="metadatapencil">
-                  <Pencil
-                    className="metadata-plus-size"
-                    data-testid="handle-edit"
-                    onClick={(e) => {
-                      handleEdit(e);
-                    }}
-                  />
+                <span
+                  data-testid="edit-assessment"
+                  onClick={(e) => {
+                    handleEdit(e);
+                  }}
+                >
+                  <Pencil className="metadata-plus-size" />
                 </span>
               ) : (
                 <>
                   <span
-                    data-testId="metadatasave"
+                    data-testId="metadatasave-assessment"
                     onClick={(e) => {
                       handleSaveData(e);
                     }}
@@ -280,7 +289,7 @@ const Assessment = ({ docId }) => {
                     <Save className="metadata-plus-size mR" />
                   </span>
                   <span
-                    data-testId="metadatadiscard"
+                    data-testId="discard-assessment"
                     onClick={(e) => {
                       handleUndo(e);
                     }}
@@ -311,7 +320,7 @@ const Assessment = ({ docId }) => {
         </AccordionDetails>
       </Accordion>
       <Popover
-        data-testId="metadata-popover"
+        data-testId="metadata-popover-assessment"
         open={!!openAudit}
         anchorEl={openAudit}
         onClose={() => setOpenAudit(null)}

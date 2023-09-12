@@ -7,6 +7,7 @@ const ColumnSettings = ({ data, handleColumnSelection }) => {
       {data.map((ele) => (
         <div className="checkbox-items">
           <input
+            data-testId="settings-checkbox"
             type="checkbox"
             checked={ele.checked}
             value={ele.id}

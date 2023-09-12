@@ -46,18 +46,17 @@ const VisitContent = ({
   }, [wrapperRef]);
 
   return (
-    <div className="asssessment-content">
+    <div className="asssessment-content" data-testId="assessment-content">
       {showModal && (
         <div className="modal-icons">
           {!isEditEnabled ? (
-            <span data-testId="metadatapencil">
-              <Pencil
-                className="metadata-plus-size"
-                data-testid="handle-edit"
-                onClick={(e) => {
-                  handleEdit(e);
-                }}
-              />
+            <span
+              data-testId="edit-assessmentcontent"
+              onClick={(e) => {
+                handleEdit(e);
+              }}
+            >
+              <Pencil className="metadata-plus-size" />
             </span>
           ) : (
             <>
@@ -71,7 +70,7 @@ const VisitContent = ({
                 <Save className="metadata-plus-size mR" />
               </span>
               <span
-                data-testId="metadatadiscard"
+                data-testId="discard-assessmentContent"
                 onClick={(e) => {
                   handleUndo(e);
                 }}
@@ -94,10 +93,10 @@ const VisitContent = ({
         )}
         <div className="column-settings-icon">
           <span
-            data-testId="metadatapencil"
+            data-testId="column-settings"
             onClick={() => setShowSetting(!showSettings)}
           >
-            <Cog className="metadata-plus-size" data-testid="handle-edit" />
+            <Cog className="metadata-plus-size" />
           </span>
         </div>
       </>
@@ -126,11 +125,13 @@ const VisitContent = ({
             placeholder="Select Key"
             canDeselect={false}
             size="small"
+            data-testId={`select-assessment`}
           >
-            {dropDownData.map((elem) => (
+            {dropDownData.map((elem, i) => (
               <MenuItem
                 key={uuidv4()}
                 value={elem.id}
+                data-testId={`option-assessmen-${i}`}
                 children={
                   <span
                     dangerouslySetInnerHTML={{ __html: elem.visit_label }}
@@ -140,8 +141,12 @@ const VisitContent = ({
             ))}
           </Select>
           <div className="plus-containter">
-            <span role="presentation">
-              <Plus onClick={handleAdd} />
+            <span
+              role="presentation"
+              data-testId="assessment-plus"
+              onClick={handleAdd}
+            >
+              <Plus />
             </span>
           </div>
         </div>
