@@ -81,7 +81,12 @@ const createRowData = (row) => {
 
 const isEmptyObj = (obj) => {
   const isEmpty = Object.values(obj).every((value) => {
-    if (value === null || value === undefined || value === '') {
+    if (
+      value === null ||
+      value === undefined ||
+      value === '' ||
+      value === 'N'
+    ) {
       return true;
     }
     return false;
@@ -301,39 +306,43 @@ const Visits = ({ docId }) => {
       </Modal>
       <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <AccordionSummary>
-          <div className="accordion_summary_container">
+          <div
+            className="accordion_summary_container"
+            data-testId="assessment-accordion"
+          >
             <Typography>Visit Schedule</Typography>
-            <div className="metadata-flex">
-              <span data-testId="expand" role="presentation">
-                <OpenNew
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleExpand(e);
-                  }}
-                />
+            <div className="metadata-flex" data-testId="assessment-container">
+              <span
+                data-testId="expand-assessment"
+                role="presentation"
+                onClick={(e) => {
+                  handleExpand(e);
+                }}
+              >
+                <OpenNew style={{ paddingRight: '10px' }} />
               </span>
-              <span data-testId="eyeIcon" role="presentation">
-                <EyeShow
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleAudit(e);
-                  }}
-                />
+              <span
+                role="presentation"
+                data-testId="eyeIcon-assessment"
+                onClick={(e) => {
+                  handleAudit(e);
+                }}
+              >
+                <EyeShow style={{ paddingRight: '10px' }} />
               </span>
               {!isEditEnabled ? (
-                <span data-testId="metadatapencil">
-                  <Pencil
-                    className="metadata-plus-size"
-                    data-testid="handle-edit"
-                    onClick={(e) => {
-                      handleEdit(e);
-                    }}
-                  />
+                <span
+                  data-testid="edit-assessment"
+                  onClick={(e) => {
+                    handleEdit(e);
+                  }}
+                >
+                  <Pencil className="metadata-plus-size" />
                 </span>
               ) : (
                 <>
                   <span
-                    data-testId="metadatasave"
+                    data-testId="metadatasave-assessment"
                     onClick={(e) => {
                       handleSaveData(e);
                     }}
@@ -342,7 +351,7 @@ const Visits = ({ docId }) => {
                     <Save className="metadata-plus-size mR" />
                   </span>
                   <span
-                    data-testId="metadatadiscard"
+                    data-testId="discard-assessment"
                     onClick={(e) => {
                       handleUndo(e);
                     }}
