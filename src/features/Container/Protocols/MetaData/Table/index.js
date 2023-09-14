@@ -137,7 +137,7 @@ const makeEditableAutocompleteCell = (options) =>
           )
         ) : row[key] === 'N' ? (
           <div></div>
-        ) : row[key].length > 50 ? (
+        ) : row[key].length > 12 ? (
           <Tooltip
             variant="light"
             title={column.header}

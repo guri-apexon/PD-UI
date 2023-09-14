@@ -1,9 +1,9 @@
+/* eslint-disable */
 import {
   render,
   fireEvent,
   screen,
 } from '../../../../../test-utils/test-utils';
-import { cleanup } from '@testing-library/react';
 import Assessment from '../Assessment/Assessment';
 import { data } from '../__mock__/_assessment.mock_data';
 
@@ -14,7 +14,6 @@ const initialData = {
 };
 
 describe('<Assessment />', () => {
-  afterEach(cleanup);
   it('Should Render without error', () => {
     render(<Assessment docId="1234" />, {
       initialState: initialData,
