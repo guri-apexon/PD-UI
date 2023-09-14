@@ -99,10 +99,6 @@ const Assessment = ({ docId }) => {
   const [openAudit, setOpenAudit] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-    dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
-  }, []);
-
   const setAssesmentData = () => {
     const data = cloneDeep(assessments.data.assessments[0].data);
     const emptyObj = [];
@@ -314,12 +310,12 @@ const Assessment = ({ docId }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails className="assessment-detail">
-          {validData.length && assessments?.data && !showModal && (
+          {!showModal && (
             <AssessmentContent
               assessments={validData}
               isEditEnabled={isEditEnabled}
               showModal={showModal}
-              columns={assessments.data.columns}
+              columns={assessments?.data?.columns}
               dropDownData={dropDownData}
               handleSelection={handleSelection}
               handleAdd={handleAdd}

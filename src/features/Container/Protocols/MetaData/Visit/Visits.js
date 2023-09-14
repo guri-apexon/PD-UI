@@ -129,10 +129,6 @@ const Visits = ({ docId }) => {
     setColumnArray(finalColumns);
   };
 
-  useEffect(() => {
-    dispatch({ type: 'GET_VISITS', payload: { docId } });
-  }, []);
-
   const getFinalDataFromTable = (data) => {
     setDataFetch(false);
     setEditEnabled(false);
@@ -180,7 +176,7 @@ const Visits = ({ docId }) => {
   };
 
   useEffect(() => {
-    if (visitsData?.data?.visit_schedule[0].data.length) {
+    if (visitsData?.data?.visit_schedule[0]?.data.length) {
       setVisitData();
     }
   }, [visitsData]);
