@@ -3,6 +3,7 @@ import {
   fireEvent,
   screen,
 } from '../../../../../test-utils/test-utils';
+import { cleanup } from '@testing-library/react';
 import Assessment from '../Assessment/Assessment';
 import { data } from '../__mock__/_assessment.mock_data';
 
@@ -13,6 +14,7 @@ const initialData = {
 };
 
 describe('<Assessment />', () => {
+  afterEach(cleanup);
   it('Should Render without error', () => {
     render(<Assessment docId="1234" />, {
       initialState: initialData,
@@ -50,9 +52,14 @@ describe('<Assessment />', () => {
     });
     const id = screen.getByTestId('expand-assessment');
     fireEvent.click(id);
-    // const edit = screen.getByTestId('edit-assessmentcontent');
+    // await waitForElement(() => {
+    //   screen.debug();
+    //   const edit = screen.queryAllByTestId('edit-modal-assessment')[0];
+    //   fireEvent.click(edit);
+    // });
+    // const edit = await screen.findByTestId('edit-assessmentcontent');
     // fireEvent.click(edit);
-    // const discard = screen.findByTestId('discard-assessmentContent');
+    // const discard = await screen.findByTestId('discard-assessmentContent');
     // fireEvent.click(discard);
   });
   it('Should add new row', () => {

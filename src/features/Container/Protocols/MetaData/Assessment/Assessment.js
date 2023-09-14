@@ -18,6 +18,7 @@ import AssessmentContent from './AssessmentContent';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import RestricModal from '../Modal';
+import { v4 as uuidv4 } from 'uuid';
 
 export const discardModalLabels = {
   title: 'Do you really want to discard the changes or continue editing?',
@@ -42,7 +43,7 @@ const createRowData = (row) => {
   Object.keys(obj).forEach(function (index) {
     obj[index] = '';
   });
-  obj.id = Math.random();
+  obj.id = uuidv4();
   obj.doc_id = row.doc_id;
   obj.assessment_id = row.assessment_id;
   obj.table_link_text = row.table_link_text;
@@ -50,6 +51,7 @@ const createRowData = (row) => {
   obj.assessment_text = 'Assessment Name';
   obj.operation = 'create';
   obj.status = 'added';
+  obj.is_default = false;
 
   return obj;
 };
@@ -135,6 +137,13 @@ const Assessment = ({ docId }) => {
 
   const getFinalDataFromTable = (data) => {
     setDataFetch(false);
+    setEditEnabled(false);
+    setShowModal(false);
+    data.forEach((item) => {
+      if (item.hasOwnProperty('is_default')) {
+        delete item['is_default'];
+      }
+    });
     dispatch({ type: 'POST_ASSESSMENT', payload: { docId, body: data } });
   };
 
@@ -216,32 +225,34 @@ const Assessment = ({ docId }) => {
         buttonOneHandler={handleCloseModal}
         buttonTwoHandler={handleModalSave}
       />
-      <Modal
-        className="full-view-modal"
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        buttonProps={[]}
-        title="Assessments"
-        hideButtons={true}
-      >
-        {assessments?.data && (
-          <AssessmentContent
-            assessments={validData}
-            isEditEnabled={isEditEnabled}
-            showModal={showModal}
-            columns={assessments.data.columns}
-            dropDownData={dropDownData}
-            handleSelection={handleSelection}
-            handleAdd={handleAdd}
-            getFinalDataFromTable={getFinalDataFromTable}
-            datafetch={datafetch}
-            handleEdit={handleEdit}
-            handleSaveData={handleSaveData}
-            handleUndo={handleUndo}
-            handleTableChange={handleTableChange}
-          />
-        )}
-      </Modal>
+      {showModal && (
+        <Modal
+          className="full-view-modal"
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          buttonProps={[]}
+          title="Assessments"
+          hideButtons={true}
+        >
+          {assessments?.data && (
+            <AssessmentContent
+              assessments={validData}
+              isEditEnabled={isEditEnabled}
+              showModal={showModal}
+              columns={assessments.data.columns}
+              dropDownData={dropDownData}
+              handleSelection={handleSelection}
+              handleAdd={handleAdd}
+              getFinalDataFromTable={getFinalDataFromTable}
+              datafetch={datafetch}
+              handleEdit={handleEdit}
+              handleSaveData={handleSaveData}
+              handleUndo={handleUndo}
+              handleTableChange={handleTableChange}
+            />
+          )}
+        </Modal>
+      )}
       <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <AccordionSummary>
           <div
@@ -257,7 +268,7 @@ const Assessment = ({ docId }) => {
                   handleExpand(e);
                 }}
               >
-                <OpenNew style={{ paddingRight: '10px' }} />
+                <OpenNew style={{ marginRight: '10px' }} />
               </span>
               <span
                 data-testId="eyeIcon-assessment"
@@ -303,7 +314,7 @@ const Assessment = ({ docId }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails className="assessment-detail">
-          {assessments?.data && (
+          {validData.length && assessments?.data && !showModal && (
             <AssessmentContent
               assessments={validData}
               isEditEnabled={isEditEnabled}
@@ -315,6 +326,9 @@ const Assessment = ({ docId }) => {
               getFinalDataFromTable={getFinalDataFromTable}
               datafetch={datafetch}
               handleTableChange={handleTableChange}
+              handleEdit={handleEdit}
+              handleSaveData={handleSaveData}
+              handleUndo={handleUndo}
             />
           )}
         </AccordionDetails>
