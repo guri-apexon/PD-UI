@@ -19,6 +19,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import RestricModal from '../Modal';
 import { discardModalLabels, saveModalLabels } from '../Assessment/Assessment';
+import { v4 as uuidv4 } from 'uuid';
 
 const visitTimeColumns = [
   {
@@ -68,13 +69,14 @@ const createRowData = (row) => {
   Object.keys(obj).forEach(function (index) {
     obj[index] = '';
   });
-  obj.id = Math.random();
+  obj.id = uuidv4();
   obj.doc_id = row.doc_id;
   obj.visit_id = row.visit_id;
   obj.table_roi_id = row.table_roi_id;
   obj.visit_label = 'Visit Label';
   obj.operation = 'create';
   obj.status = 'added';
+  obj.is_default = false;
 
   return obj;
 };
@@ -135,6 +137,11 @@ const Visits = ({ docId }) => {
     setDataFetch(false);
     setEditEnabled(false);
     setShowModal(false);
+    data.forEach((item) => {
+      if (item.hasOwnProperty('is_default')) {
+        delete item['is_default'];
+      }
+    });
     dispatch({ type: 'POST_VISIT', payload: { docId, body: data } });
   };
 
@@ -274,36 +281,38 @@ const Visits = ({ docId }) => {
         buttonOneHandler={handleCloseModal}
         buttonTwoHandler={handleModalSave}
       />
-      <Modal
-        className="full-view-modal"
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        buttonProps={[]}
-        title="Visit Schedule"
-        hideButtons={true}
-      >
-        {validData.length && columnArray.length && (
-          <VisitContent
-            data={validData}
-            columns={columnArray}
-            isEditEnabled={isEditEnabled}
-            dropDownData={dropDownData}
-            handleSelection={handleSelection}
-            showModal={showModal}
-            handleAdd={handleAdd}
-            getFinalDataFromTable={getFinalDataFromTable}
-            datafetch={datafetch}
-            handleEdit={handleEdit}
-            handleSaveData={handleSaveData}
-            handleUndo={handleUndo}
-            handleTableChange={handleTableChange}
-            showSettings={showSettings}
-            setShowSetting={setShowSetting}
-            handleColumnSelection={handleColumnSelection}
-            visitColumns={visitColumns}
-          />
-        )}
-      </Modal>
+      {showModal && (
+        <Modal
+          className="full-view-modal"
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          buttonProps={[]}
+          title="Visit Schedule"
+          hideButtons={true}
+        >
+          {validData.length && columnArray.length && (
+            <VisitContent
+              data={validData}
+              columns={columnArray}
+              isEditEnabled={isEditEnabled}
+              dropDownData={dropDownData}
+              handleSelection={handleSelection}
+              showModal={showModal}
+              handleAdd={handleAdd}
+              getFinalDataFromTable={getFinalDataFromTable}
+              datafetch={datafetch}
+              handleEdit={handleEdit}
+              handleSaveData={handleSaveData}
+              handleUndo={handleUndo}
+              handleTableChange={handleTableChange}
+              showSettings={showSettings}
+              setShowSetting={setShowSetting}
+              handleColumnSelection={handleColumnSelection}
+              visitColumns={visitColumns}
+            />
+          )}
+        </Modal>
+      )}
       <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <AccordionSummary>
           <div
@@ -319,7 +328,7 @@ const Visits = ({ docId }) => {
                   handleExpand(e);
                 }}
               >
-                <OpenNew style={{ paddingRight: '10px' }} />
+                <OpenNew style={{ marginRight: '10px' }} />
               </span>
               <span
                 role="presentation"
@@ -365,7 +374,7 @@ const Visits = ({ docId }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails className="assessment-detail">
-          {validData.length && columnArray.length && (
+          {validData.length && columnArray.length && !showModal && (
             <VisitContent
               data={validData}
               columns={columnArray}

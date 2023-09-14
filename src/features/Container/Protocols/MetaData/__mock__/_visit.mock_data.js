@@ -152,3 +152,9 @@ export const data = {
   },
   error: null,
 };
+
+export const mockdata = {
+  loading: false,
+  data: null,
+  error: null,
+};
