@@ -117,7 +117,7 @@ const Assessment = ({ docId }) => {
         delete objClone.assessment_text;
         delete objClone.table_link_text;
         delete objClone.table_roi_id;
-
+        delete objClone.is_default;
         if (isEmptyObj(objClone)) {
           emptyObj.push(element);
         } else {

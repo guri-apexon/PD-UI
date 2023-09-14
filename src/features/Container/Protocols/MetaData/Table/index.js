@@ -103,7 +103,6 @@ const fieldStyles = {
 };
 const makeEditableAutocompleteCell = (options) =>
   function EditableAutocompleteCell({ row, column }) {
-    console.log('column', column);
     const key = column.accessor;
     const [value, setValue] = useState(row?.editedRow[key]);
 

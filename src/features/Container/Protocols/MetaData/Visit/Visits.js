@@ -166,6 +166,7 @@ const Visits = ({ docId }) => {
         delete objClone.day_timepoint;
         delete objClone.window_timepoint;
         delete objClone.month_timepoint;
+        delete objClone.is_default;
 
         if (isEmptyObj(objClone)) {
           emptyObj.push(element);
