@@ -62,7 +62,7 @@ const AssessmentContent = ({
           )}
         </div>
       )}
-      {assessments.length && (
+      {assessments?.length && (
         <AssessmentVisitTable
           data={assessments}
           columns={columns}

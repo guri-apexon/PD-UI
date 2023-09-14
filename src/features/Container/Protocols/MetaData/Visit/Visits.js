@@ -129,10 +129,6 @@ const Visits = ({ docId }) => {
     setColumnArray(finalColumns);
   };
 
-  useEffect(() => {
-    dispatch({ type: 'GET_VISITS', payload: { docId } });
-  }, []);
-
   const getFinalDataFromTable = (data) => {
     setDataFetch(false);
     setEditEnabled(false);
@@ -166,6 +162,7 @@ const Visits = ({ docId }) => {
         delete objClone.day_timepoint;
         delete objClone.window_timepoint;
         delete objClone.month_timepoint;
+        delete objClone.is_default;
 
         if (isEmptyObj(objClone)) {
           emptyObj.push(element);
@@ -179,7 +176,7 @@ const Visits = ({ docId }) => {
   };
 
   useEffect(() => {
-    if (visitsData?.data?.visit_schedule[0].data.length) {
+    if (visitsData?.data?.visit_schedule[0]?.data.length) {
       setVisitData();
     }
   }, [visitsData]);
