@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {
   render,
   fireEvent,
@@ -50,9 +51,14 @@ describe('<Assessment />', () => {
     });
     const id = screen.getByTestId('expand-assessment');
     fireEvent.click(id);
-    // const edit = screen.getByTestId('edit-assessmentcontent');
+    // await waitForElement(() => {
+    //   screen.debug();
+    //   const edit = screen.queryAllByTestId('edit-modal-assessment')[0];
+    //   fireEvent.click(edit);
+    // });
+    // const edit = await screen.findByTestId('edit-assessmentcontent');
     // fireEvent.click(edit);
-    // const discard = screen.findByTestId('discard-assessmentContent');
+    // const discard = await screen.findByTestId('discard-assessmentContent');
     // fireEvent.click(discard);
   });
   it('Should add new row', () => {

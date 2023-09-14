@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Tooltip from 'apollo-react/components/Tooltip';
 import Table from 'apollo-react/components/Table';
-import { userId } from '../../../../../store/userDetails';
+import { userId, userType } from '../../../../../store/userDetails';
 import Button from 'apollo-react/components/Button';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
@@ -22,8 +22,17 @@ const ActionCell = ({ row }) => {
     onCancel,
     editedRow,
     handleDelete,
+    is_default,
   } = row;
-  const menuItems = [
+  const user_type = useSelector(userType);
+
+  const menuItemsP = [
+    {
+      text: 'Edit',
+      onClick: () => onRowEdit(id),
+    },
+  ];
+  const menuItemsA = [
     {
       text: 'Edit',
       onClick: () => onRowEdit(id),
@@ -33,6 +42,14 @@ const ActionCell = ({ row }) => {
       onClick: () => handleDelete(id),
     },
   ];
+
+  // if (user_type === 'admin') {
+  //   const obj = {
+  //     text: 'Delete',
+  //     onClick: () => handleDelete(id),
+  //   };
+  //   menuItems.push(obj);
+  // }
 
   return editMode ? (
     <div style={{ marginTop: 8, whiteSpace: 'nowrap' }}>
@@ -45,7 +62,13 @@ const ActionCell = ({ row }) => {
     </div>
   ) : (
     <Tooltip title="Actions" disableFocusListener>
-      <IconMenuButton id="actions" menuItems={menuItems} size="small">
+      <IconMenuButton
+        id="actions"
+        menuItems={
+          user_type === 'admin' || !is_default ? menuItemsA : menuItemsP
+        }
+        size="small"
+      >
         <EllipsisVerticalIcon />
       </IconMenuButton>
     </Tooltip>
@@ -54,7 +77,7 @@ const ActionCell = ({ row }) => {
 const AllCell = ({ row, column: { accessor: key } }) => {
   const [value, setValue] = useState(row?.editedRow[key]);
   const width = key === 'assessment_text' || 'visit_label' ? 150 : 100;
-  if (row?.operation === 'create') {
+  if (!row?.is_default) {
     return row.editMode ? (
       <div className="input-container">
         <input
@@ -79,7 +102,11 @@ const fieldStyles = {
   },
 };
 const makeEditableAutocompleteCell = (options) =>
-  function EditableAutocompleteCell({ row, column: { accessor: key } }) {
+  function EditableAutocompleteCell({ row, column }) {
+    console.log('column', column);
+    const key = column.accessor;
+    const [value, setValue] = useState(row?.editedRow[key]);
+
     return (
       <div className="input-container">
         {row.editMode ? (
@@ -101,12 +128,27 @@ const makeEditableAutocompleteCell = (options) =>
           ) : (
             <input
               type="text"
-              onChange={(e) => row.editRow(key, e.target.value)}
-              value={row.editedRow[key]}
+              onChange={(e) => setValue(e.target.value)}
+              onBlur={() => row.editRow(key, value)}
+              value={value}
+              // onChange={(e) => row.editRow(key, e.target.value)}
+              // value={row.editedRow[key]}
             />
           )
         ) : row[key] === 'N' ? (
           <div></div>
+        ) : row[key].length > 12 ? (
+          <Tooltip
+            variant="light"
+            title={column.header}
+            subtitle={<div dangerouslySetInnerHTML={{ __html: row[key] }} />}
+            placement="left"
+            style={{ width: 100, padding: 5 }}
+          >
+            <span>
+              <span className="adjust-ellipses">{row[key].substring(0, 12)}...</span>
+            </span>
+          </Tooltip>
         ) : (
           <div
             style={{ width: 100 }}
@@ -293,7 +335,7 @@ export default function AssessmentVisitTable(props) {
           hidePagination
           hasScroll
           maxHeight={fullView ? '72vh' : '60vh'}
-          className="abc"
+          className="table-assessment-visit"
         />
       )}
     </div>

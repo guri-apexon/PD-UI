@@ -346,6 +346,19 @@
 }
 .assessment-table-container {
   padding: 12px;
+  .adjust-ellipses {
+    max-width: 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  [class^='MuiTableCell-root']:last-child {
+    // max-width: 100px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0;
+  }
 }
 .assessment-checkbox-container {
   display: flex;

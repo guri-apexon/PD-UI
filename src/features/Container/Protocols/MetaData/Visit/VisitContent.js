@@ -51,7 +51,7 @@ const VisitContent = ({
         <div className="modal-icons">
           {!isEditEnabled ? (
             <span
-              data-testId="edit-assessmentcontent"
+              data-testId="edit-visitcontent"
               onClick={(e) => {
                 handleEdit(e);
               }}
