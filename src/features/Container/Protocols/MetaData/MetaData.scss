@@ -353,7 +353,7 @@
     overflow: hidden;
   }
   [class^='MuiTableCell-root']:last-child {
-    max-width: 100px;
+    // max-width: 100px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
