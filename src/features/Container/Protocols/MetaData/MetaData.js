@@ -16,6 +16,8 @@ import {
   accordionMetaData,
   accordianMetaParam,
   metadataApiCallValue,
+  visitData,
+  assessmentData,
 } from '../protocolSlice';
 import Loader from '../../../Components/Loader/Loader';
 import {
@@ -32,6 +34,8 @@ import Visits from './Visit/Visits';
 
 function MetaData({ docId }) {
   const wrapperRef = useRef(null);
+  const visitsData = useSelector(visitData);
+  const assessments = useSelector(assessmentData);
   const apiResponse = useSelector(metadataApiCallValue);
   const accordianResult = useSelector(accordionMetaData);
   const metaParamResult = useSelector(accordianMetaParam);
@@ -386,6 +390,8 @@ function MetaData({ docId }) {
 
   useEffect(() => {
     fetchMetaData();
+    dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
+    dispatch({ type: 'GET_VISITS', payload: { docId } });
     // eslint-disable-next-line
   }, []);
 
@@ -569,8 +575,12 @@ function MetaData({ docId }) {
       ) : (
         <div className="_meta_data-boarder">
           <div className="other-accordions">
-            <Assessment docId={docId} />
-            <Visits docId={docId} />
+            {assessments?.data?.assessments.length > 0 && (
+              <Assessment docId={docId} />
+            )}
+            {visitsData?.data?.visit_schedule.length > 0 && (
+              <Visits docId={docId} />
+            )}
           </div>
 
           {Object?.entries(accordianData || {}).map(([key, value]) => {
