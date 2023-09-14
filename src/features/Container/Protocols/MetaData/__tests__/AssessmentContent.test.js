@@ -49,7 +49,7 @@ describe('<AssessmentContent />', () => {
         initialState: initialData,
       },
     );
-    const assessment = screen.getByTestId('edit-assessmentcontent');
+    const assessment = screen.getByTestId('edit-modal-assessment');
     expect(assessment).toBeInTheDocument();
   });
   it('Should be able to discard edit mode', () => {
