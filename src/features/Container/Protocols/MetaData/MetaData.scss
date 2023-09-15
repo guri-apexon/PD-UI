@@ -446,3 +446,13 @@
 .audit-info-line {
   margin-bottom: 5px;
 }
+.no-data-section {
+  display: flex;
+  justify-content: center;
+  height: 200px;
+  width: 100%;
+  background-color: #f6f6f6;
+  label {
+    margin: auto;
+  }
+}

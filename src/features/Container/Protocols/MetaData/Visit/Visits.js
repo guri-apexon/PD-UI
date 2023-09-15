@@ -287,7 +287,7 @@ const Visits = ({ docId }) => {
           title="Visit Schedule"
           hideButtons={true}
         >
-          {validData.length && columnArray.length && (
+          {validData.length > 0 && columnArray.length > 0 && (
             <VisitContent
               data={validData}
               columns={columnArray}
@@ -371,7 +371,7 @@ const Visits = ({ docId }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails className="assessment-detail">
-          {validData.length && columnArray.length && !showModal && (
+          {validData.length > 0 && columnArray.length > 0 && !showModal && (
             <VisitContent
               data={validData}
               columns={columnArray}
@@ -391,6 +391,11 @@ const Visits = ({ docId }) => {
               handleColumnSelection={handleColumnSelection}
               visitColumns={visitColumns}
             />
+          )}
+          {validData.length === 0 && (
+            <div className="no-data-section">
+              <label>No data</label>
+            </div>
           )}
         </AccordionDetails>
       </Accordion>

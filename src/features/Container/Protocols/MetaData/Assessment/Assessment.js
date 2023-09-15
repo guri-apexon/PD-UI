@@ -230,7 +230,7 @@ const Assessment = ({ docId }) => {
           title="Assessments"
           hideButtons={true}
         >
-          {assessments?.data && (
+          {validData.length > 0 && assessments?.data?.columns.length > 0 && (
             <AssessmentContent
               assessments={validData}
               isEditEnabled={isEditEnabled}
@@ -310,22 +310,29 @@ const Assessment = ({ docId }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails className="assessment-detail">
-          {!showModal && (
-            <AssessmentContent
-              assessments={validData}
-              isEditEnabled={isEditEnabled}
-              showModal={showModal}
-              columns={assessments?.data?.columns}
-              dropDownData={dropDownData}
-              handleSelection={handleSelection}
-              handleAdd={handleAdd}
-              getFinalDataFromTable={getFinalDataFromTable}
-              datafetch={datafetch}
-              handleTableChange={handleTableChange}
-              handleEdit={handleEdit}
-              handleSaveData={handleSaveData}
-              handleUndo={handleUndo}
-            />
+          {validData.length > 0 &&
+            assessments?.data?.columns.length > 0 &&
+            !showModal && (
+              <AssessmentContent
+                assessments={validData}
+                isEditEnabled={isEditEnabled}
+                showModal={showModal}
+                columns={assessments?.data?.columns}
+                dropDownData={dropDownData}
+                handleSelection={handleSelection}
+                handleAdd={handleAdd}
+                getFinalDataFromTable={getFinalDataFromTable}
+                datafetch={datafetch}
+                handleTableChange={handleTableChange}
+                handleEdit={handleEdit}
+                handleSaveData={handleSaveData}
+                handleUndo={handleUndo}
+              />
+            )}
+          {validData.length === 0 && (
+            <div className="no-data-section">
+              <label>No data</label>
+            </div>
           )}
         </AccordionDetails>
       </Accordion>
