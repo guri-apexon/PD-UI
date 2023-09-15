@@ -145,7 +145,9 @@ const makeEditableAutocompleteCell = (options) =>
             style={{ width: 100, padding: 5 }}
           >
             <span>
-              <span className="adjust-ellipses">{row[key].substring(0, 12)}...</span>
+              <span className="adjust-ellipses">
+                {row[key].substring(0, 12)}...
+              </span>
             </span>
           </Tooltip>
         ) : (
@@ -312,13 +314,10 @@ export default function AssessmentVisitTable(props) {
         buttonOneHandler={handleCloseModal}
         buttonTwoHandler={onDelete}
       />
-      {columnData.length && rows.length && (
+      {columnData.length > 0 && rows.length > 0 && (
         <Table
           columns={columnData}
           rows={rows.map((row) => {
-            // if (row?.status === 'added') {
-            //   onRowEdit(row.id);
-            // }
             return {
               ...row,
               onRowEdit,
