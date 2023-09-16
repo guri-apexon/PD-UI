@@ -12,6 +12,9 @@ import Select from 'apollo-react/components/Select';
 import { deleteModalLabels } from '../Assessment/Assessment';
 import RestricModal from '../Modal';
 import { useSelector } from 'react-redux';
+import TextField from 'apollo-react/components/TextField';
+
+let globalEditedRow = {};
 
 const ActionCell = ({ row }) => {
   const {
@@ -43,14 +46,6 @@ const ActionCell = ({ row }) => {
     },
   ];
 
-  // if (user_type === 'admin') {
-  //   const obj = {
-  //     text: 'Delete',
-  //     onClick: () => handleDelete(id),
-  //   };
-  //   menuItems.push(obj);
-  // }
-
   return editMode ? (
     <div style={{ marginTop: 8, whiteSpace: 'nowrap' }}>
       <Button size="small" style={{ marginRight: 8 }} onClick={onCancel}>
@@ -77,14 +72,22 @@ const ActionCell = ({ row }) => {
 const AllCell = ({ row, column: { accessor: key } }) => {
   const [value, setValue] = useState(row?.editedRow[key]);
   const width = key === 'assessment_text' || 'visit_label' ? 150 : 100;
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    const obj = { ...globalEditedRow, [key]: e.target.value };
+    globalEditedRow = obj;
+  };
+
   if (!row?.is_default) {
     return row.editMode ? (
       <div className="input-container">
-        <input
-          type="text"
-          onChange={(e) => setValue(e.target.value)}
-          onBlur={() => row.editRow(key, value)}
+        <TextField
+          size="small"
+          fullWidth
           value={value}
+          onChange={handleChange}
+          {...fieldStyles}
         />
       </div>
     ) : (
@@ -106,10 +109,16 @@ const makeEditableAutocompleteCell = (options) =>
     const key = column.accessor;
     const [value, setValue] = useState(row?.editedRow[key]);
 
+    const handleChange = (e) => {
+      setValue(e.target.value);
+      const obj = { ...globalEditedRow, [key]: e.target.value };
+      globalEditedRow = obj;
+    };
+
     return (
       <div className="input-container">
         {row.editMode ? (
-          options.length ? (
+          options.length > 0 ? (
             <Select
               size="small"
               fullWidth
@@ -125,13 +134,12 @@ const makeEditableAutocompleteCell = (options) =>
               ))}
             </Select>
           ) : (
-            <input
-              type="text"
-              onChange={(e) => setValue(e.target.value)}
-              onBlur={() => row.editRow(key, value)}
+            <TextField
+              size="small"
+              fullWidth
               value={value}
-              // onChange={(e) => row.editRow(key, e.target.value)}
-              // value={row.editedRow[key]}
+              onChange={handleChange}
+              {...fieldStyles}
             />
           )
         ) : row[key] === 'N' ? (
@@ -237,18 +245,24 @@ export default function AssessmentVisitTable(props) {
     const index = data.findIndex((item) => item?.status === 'added');
     if (index > -1) {
       setEditedRow(data[index]);
+      globalEditedRow = data[index];
     }
     setRows(data);
+    if (!editEnabled) {
+      setEditedRow({});
+      globalEditedRow = {};
+    }
   }, [data, editEnabled, columns]);
 
   const onRowEdit = (id) => {
     setEditedRow(rows.find((row) => row.id === id));
+    globalEditedRow = rows?.find((row) => row.id === id);
   };
 
   const onRowSave = () => {
     const updatedRows = rows.map((row) => {
-      if (row.id === editedRow.id) {
-        let obj = { ...editedRow };
+      if (row.id === globalEditedRow.id) {
+        let obj = { ...globalEditedRow };
         if (obj?.status === 'added') {
           obj.user_id = userId1.substring(1);
           delete obj.status;
@@ -264,6 +278,7 @@ export default function AssessmentVisitTable(props) {
     setRows(updatedRows);
     handleTableChange(updatedRows);
     setEditedRow({});
+    globalEditedRow = {};
   };
 
   const onCancel = () => {
@@ -314,28 +329,28 @@ export default function AssessmentVisitTable(props) {
         buttonOneHandler={handleCloseModal}
         buttonTwoHandler={onDelete}
       />
-      {columnData.length > 0 && rows.length > 0 && (
-        <Table
-          columns={columnData}
-          rows={rows.map((row) => {
-            return {
-              ...row,
-              onRowEdit,
-              onRowSave,
-              onCancel,
-              handleDelete,
-              editRow,
-              editMode: editedRow?.id === row.id,
-              editedRow,
-            };
-          })}
-          rowId="id"
-          hidePagination
-          hasScroll
-          maxHeight={fullView ? '72vh' : '60vh'}
-          className="table-assessment-visit"
-        />
-      )}
+      {/* {columnData.length > 0 && rows.length > 0 && ( */}
+      <Table
+        columns={columnData}
+        rows={rows.map((row) => {
+          return {
+            ...row,
+            onRowEdit,
+            onRowSave,
+            onCancel,
+            handleDelete,
+            editRow,
+            editMode: editedRow?.id === row.id,
+            editedRow,
+          };
+        })}
+        rowId="id"
+        hidePagination
+        hasScroll
+        maxHeight={fullView ? '72vh' : '60vh'}
+        className="table-assessment-visit"
+      />
+      {/* )} */}
     </div>
   );
 }
