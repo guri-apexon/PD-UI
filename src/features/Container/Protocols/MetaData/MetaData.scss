@@ -327,6 +327,9 @@
   td > div {
     text-align: center;
   }
+  tr > td:first-child {
+    padding: 10px;
+  }
   tr > td:first-child > div {
     text-align: left;
   }
