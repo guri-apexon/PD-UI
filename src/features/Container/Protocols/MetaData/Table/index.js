@@ -248,6 +248,10 @@ export default function AssessmentVisitTable(props) {
       globalEditedRow = data[index];
     }
     setRows(data);
+    if (!editEnabled) {
+      setEditedRow({});
+      globalEditedRow = {};
+    }
   }, [data, editEnabled, columns]);
 
   const onRowEdit = (id) => {
