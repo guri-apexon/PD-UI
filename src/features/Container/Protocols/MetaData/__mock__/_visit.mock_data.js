@@ -10,7 +10,7 @@ export const data = {
             doc_id: '2b2f1678-127c-45b6-8da8-89d54cb424aa',
             visit_id: '04900246-72c9-43b0-a4dd-8e7055c3d8e1',
             table_roi_id: '30a69afe-e2f1-4607-a1ae-49167d109ece',
-            visit_label: 'V1 C1-28 days Screening',
+            visit_sequence: 'V1',
             epoch_timepoint: 'Screening',
             cycle_timepoint: '1-28 days',
             visit_timepoint: '1',
@@ -30,7 +30,7 @@ export const data = {
             doc_id: '2b2f1678-127c-45b6-8da8-89d54cb424aa',
             visit_id: '04900246-72c9-43b0-a4dd-8e7055c3d8e1',
             table_roi_id: '30a69afe-e2f1-4607-a1ae-49167d109ece',
-            visit_label: 'V2 D-23 to -1 9 C21 2 days Run-In',
+            visit_sequence: 'V2',
             epoch_timepoint: 'Run-In',
             cycle_timepoint: '21 2 days',
             visit_timepoint: '2',
@@ -51,7 +51,7 @@ export const data = {
     columns: [
       {
         displayName: 'Visit Label',
-        key: 'visit_label',
+        key: 'visit_sequence',
         possible_values: [],
       },
       {
