@@ -73,7 +73,7 @@ const createRowData = (row) => {
   obj.doc_id = row.doc_id;
   obj.visit_id = row.visit_id;
   obj.table_roi_id = row.table_roi_id;
-  obj.visit_label = 'Visit Label';
+  obj.visit_sequence = 'Vx';
   obj.operation = 'create';
   obj.status = 'added';
   obj.is_default = false;
@@ -153,7 +153,7 @@ const Visits = ({ docId }) => {
         delete objClone.doc_id;
         delete objClone.visit_id;
         delete objClone.table_roi_id;
-        delete objClone.visit_label;
+        delete objClone.visit_sequence;
         delete objClone.epoch_timepoint;
         delete objClone.cycle_timepoint;
         delete objClone.visit_timepoint;

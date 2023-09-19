@@ -134,7 +134,7 @@ const VisitContent = ({
                 data-testId={`option-assessmen-${i}`}
                 children={
                   <span
-                    dangerouslySetInnerHTML={{ __html: elem.visit_label }}
+                    dangerouslySetInnerHTML={{ __html: elem.visit_sequence }}
                   ></span>
                 }
               />

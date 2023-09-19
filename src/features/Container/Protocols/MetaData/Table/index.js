@@ -71,7 +71,7 @@ const ActionCell = ({ row }) => {
 };
 const AllCell = ({ row, column: { accessor: key } }) => {
   const [value, setValue] = useState(row?.editedRow[key]);
-  const width = key === 'assessment_text' || 'visit_label' ? 150 : 100;
+  const width = key === 'assessment_text' || 'visit_sequence' ? 150 : 100;
 
   const handleChange = (e) => {
     setValue(e.target.value);
@@ -182,15 +182,15 @@ const getColumns = (columns, editEnabled, page) => {
       header: element.displayName,
       accessor: element.key,
       customCell:
-        element.key === 'assessment_text' || element.key === 'visit_label'
+        element.key === 'assessment_text' || element.key === 'visit_sequence'
           ? AllCell
           : makeEditableAutocompleteCell(element?.possible_values.values || []),
       fixedWidth: true,
       frozen:
-        element.key === 'assessment_text' || element.key === 'visit_label',
+        element.key === 'assessment_text' || element.key === 'visit_sequence',
       hidden: element?.hidden,
     };
-    if (element.key === 'assessment_text' || element.key === 'visit_label') {
+    if (element.key === 'assessment_text' || element.key === 'visit_sequence') {
       cols.unshift(obj);
     } else {
       cols.push(obj);
