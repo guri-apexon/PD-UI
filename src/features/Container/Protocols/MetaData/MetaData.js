@@ -386,6 +386,8 @@ function MetaData({ docId }) {
 
   useEffect(() => {
     fetchMetaData();
+    dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
+    dispatch({ type: 'GET_VISITS', payload: { docId } });
     // eslint-disable-next-line
   }, []);
 

@@ -5,13 +5,16 @@ import { v4 as uuidv4 } from 'uuid';
 import IconMenuButton from 'apollo-react/components/IconMenuButton';
 import Tooltip from 'apollo-react/components/Tooltip';
 import Table from 'apollo-react/components/Table';
-import { userId } from '../../../../../store/userDetails';
+import { userId, userType } from '../../../../../store/userDetails';
 import Button from 'apollo-react/components/Button';
 import MenuItem from 'apollo-react/components/MenuItem';
 import Select from 'apollo-react/components/Select';
 import { deleteModalLabels } from '../Assessment/Assessment';
 import RestricModal from '../Modal';
 import { useSelector } from 'react-redux';
+import TextField from 'apollo-react/components/TextField';
+
+let globalEditedRow = {};
 
 const ActionCell = ({ row }) => {
   const {
@@ -22,8 +25,17 @@ const ActionCell = ({ row }) => {
     onCancel,
     editedRow,
     handleDelete,
+    is_default,
   } = row;
-  const menuItems = [
+  const user_type = useSelector(userType);
+
+  const menuItemsP = [
+    {
+      text: 'Edit',
+      onClick: () => onRowEdit(id),
+    },
+  ];
+  const menuItemsA = [
     {
       text: 'Edit',
       onClick: () => onRowEdit(id),
@@ -45,7 +57,13 @@ const ActionCell = ({ row }) => {
     </div>
   ) : (
     <Tooltip title="Actions" disableFocusListener>
-      <IconMenuButton id="actions" menuItems={menuItems} size="small">
+      <IconMenuButton
+        id="actions"
+        menuItems={
+          user_type === 'admin' || !is_default ? menuItemsA : menuItemsP
+        }
+        size="small"
+      >
         <EllipsisVerticalIcon />
       </IconMenuButton>
     </Tooltip>
@@ -53,15 +71,23 @@ const ActionCell = ({ row }) => {
 };
 const AllCell = ({ row, column: { accessor: key } }) => {
   const [value, setValue] = useState(row?.editedRow[key]);
-  const width = key === 'assessment_text' || 'visit_label' ? 150 : 100;
-  if (row?.operation === 'create') {
+  const width = key === 'assessment_text' || 'visit_sequence' ? 150 : 100;
+
+  const handleChange = (e) => {
+    setValue(e.target.value);
+    const obj = { ...globalEditedRow, [key]: e.target.value };
+    globalEditedRow = obj;
+  };
+
+  if (!row?.is_default) {
     return row.editMode ? (
       <div className="input-container">
-        <input
-          type="text"
-          onChange={(e) => setValue(e.target.value)}
-          onBlur={() => row.editRow(key, value)}
+        <TextField
+          size="small"
+          fullWidth
           value={value}
+          onChange={handleChange}
+          {...fieldStyles}
         />
       </div>
     ) : (
@@ -79,17 +105,26 @@ const fieldStyles = {
   },
 };
 const makeEditableAutocompleteCell = (options) =>
-  function EditableAutocompleteCell({ row, column: { accessor: key } }) {
+  function EditableAutocompleteCell({ row, column }) {
+    const key = column.accessor;
+    const [value, setValue] = useState(row?.editedRow[key]);
+
+    const handleChange = (e) => {
+      setValue(e.target.value);
+      const obj = { ...globalEditedRow, [key]: e.target.value };
+      globalEditedRow = obj;
+    };
+
     return (
       <div className="input-container">
         {row.editMode ? (
-          options.length ? (
+          options.length > 0 ? (
             <Select
               size="small"
               fullWidth
               canDeselect={false}
-              value={row.editedRow[key]}
-              onChange={(e) => row.editRow(key, e.target.value)}
+              value={value}
+              onChange={handleChange}
               {...fieldStyles}
             >
               {options.map((option) => (
@@ -99,12 +134,30 @@ const makeEditableAutocompleteCell = (options) =>
               ))}
             </Select>
           ) : (
-            <input
-              type="text"
-              onChange={(e) => row.editRow(key, e.target.value)}
-              value={row.editedRow[key]}
+            <TextField
+              size="small"
+              fullWidth
+              value={value}
+              onChange={handleChange}
+              {...fieldStyles}
             />
           )
+        ) : row[key] === 'N' ? (
+          <div></div>
+        ) : row[key].length > 12 ? (
+          <Tooltip
+            variant="light"
+            title={column.header}
+            subtitle={<div dangerouslySetInnerHTML={{ __html: row[key] }} />}
+            placement="left"
+            style={{ width: 100, padding: 5 }}
+          >
+            <span>
+              <span className="adjust-ellipses">
+                {row[key].substring(0, 12)}...
+              </span>
+            </span>
+          </Tooltip>
         ) : (
           <div
             style={{ width: 100 }}
@@ -129,15 +182,15 @@ const getColumns = (columns, editEnabled, page) => {
       header: element.displayName,
       accessor: element.key,
       customCell:
-        element.key === 'assessment_text' || element.key === 'visit_label'
+        element.key === 'assessment_text' || element.key === 'visit_sequence'
           ? AllCell
           : makeEditableAutocompleteCell(element?.possible_values.values || []),
       fixedWidth: true,
       frozen:
-        element.key === 'assessment_text' || element.key === 'visit_label',
+        element.key === 'assessment_text' || element.key === 'visit_sequence',
       hidden: element?.hidden,
     };
-    if (element.key === 'assessment_text' || element.key === 'visit_label') {
+    if (element.key === 'assessment_text' || element.key === 'visit_sequence') {
       cols.unshift(obj);
     } else {
       cols.push(obj);
@@ -192,18 +245,24 @@ export default function AssessmentVisitTable(props) {
     const index = data.findIndex((item) => item?.status === 'added');
     if (index > -1) {
       setEditedRow(data[index]);
+      globalEditedRow = data[index];
     }
     setRows(data);
+    if (!editEnabled) {
+      setEditedRow({});
+      globalEditedRow = {};
+    }
   }, [data, editEnabled, columns]);
 
   const onRowEdit = (id) => {
     setEditedRow(rows.find((row) => row.id === id));
+    globalEditedRow = rows?.find((row) => row.id === id);
   };
 
   const onRowSave = () => {
     const updatedRows = rows.map((row) => {
-      if (row.id === editedRow.id) {
-        let obj = { ...editedRow };
+      if (row.id === globalEditedRow.id) {
+        let obj = { ...globalEditedRow };
         if (obj?.status === 'added') {
           obj.user_id = userId1.substring(1);
           delete obj.status;
@@ -219,6 +278,7 @@ export default function AssessmentVisitTable(props) {
     setRows(updatedRows);
     handleTableChange(updatedRows);
     setEditedRow({});
+    globalEditedRow = {};
   };
 
   const onCancel = () => {
@@ -269,31 +329,28 @@ export default function AssessmentVisitTable(props) {
         buttonOneHandler={handleCloseModal}
         buttonTwoHandler={onDelete}
       />
-      {columnData.length && rows.length && (
-        <Table
-          columns={columnData}
-          rows={rows.map((row) => {
-            // if (row?.status === 'added') {
-            //   onRowEdit(row.id);
-            // }
-            return {
-              ...row,
-              onRowEdit,
-              onRowSave,
-              onCancel,
-              handleDelete,
-              editRow,
-              editMode: editedRow?.id === row.id,
-              editedRow,
-            };
-          })}
-          rowId="id"
-          hidePagination
-          hasScroll
-          maxHeight={fullView ? '72vh' : '60vh'}
-          className="abc"
-        />
-      )}
+      {/* {columnData.length > 0 && rows.length > 0 && ( */}
+      <Table
+        columns={columnData}
+        rows={rows.map((row) => {
+          return {
+            ...row,
+            onRowEdit,
+            onRowSave,
+            onCancel,
+            handleDelete,
+            editRow,
+            editMode: editedRow?.id === row.id,
+            editedRow,
+          };
+        })}
+        rowId="id"
+        hidePagination
+        hasScroll
+        maxHeight={fullView ? '72vh' : '60vh'}
+        className="table-assessment-visit"
+      />
+      {/* )} */}
     </div>
   );
 }

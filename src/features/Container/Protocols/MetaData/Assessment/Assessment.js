@@ -18,6 +18,7 @@ import AssessmentContent from './AssessmentContent';
 import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import RestricModal from '../Modal';
+import { v4 as uuidv4 } from 'uuid';
 
 export const discardModalLabels = {
   title: 'Do you really want to discard the changes or continue editing?',
@@ -42,7 +43,7 @@ const createRowData = (row) => {
   Object.keys(obj).forEach(function (index) {
     obj[index] = '';
   });
-  obj.id = Math.random();
+  obj.id = uuidv4();
   obj.doc_id = row.doc_id;
   obj.assessment_id = row.assessment_id;
   obj.table_link_text = row.table_link_text;
@@ -50,13 +51,19 @@ const createRowData = (row) => {
   obj.assessment_text = 'Assessment Name';
   obj.operation = 'create';
   obj.status = 'added';
+  obj.is_default = false;
 
   return obj;
 };
 
 const isEmptyObj = (obj) => {
   const isEmpty = Object.values(obj).every((value) => {
-    if (value === null || value === undefined || value === '') {
+    if (
+      value === null ||
+      value === undefined ||
+      value === '' ||
+      value === 'N'
+    ) {
       return true;
     }
     return false;
@@ -64,20 +71,20 @@ const isEmptyObj = (obj) => {
   return isEmpty;
 };
 
-const removeByAttr = function (arr, attr, value) {
-  let i = arr.length;
-  while (i--) {
-    if (
-      arr[i] &&
-      arr[i].hasOwnProperty(attr) &&
-      arguments.length > 2 &&
-      arr[i][attr] === value
-    ) {
-      arr.splice(i, 1);
-    }
-  }
-  return arr;
-};
+// const removeByAttr = function (arr, attr, value) {
+//   let i = arr.length;
+//   while (i--) {
+//     if (
+//       arr[i] &&
+//       arr[i].hasOwnProperty(attr) &&
+//       arguments.length > 2 &&
+//       arr[i][attr] === value
+//     ) {
+//       arr.splice(i, 1);
+//     }
+//   }
+//   return arr;
+// };
 
 const Assessment = ({ docId }) => {
   const dispatch = useDispatch();
@@ -91,10 +98,6 @@ const Assessment = ({ docId }) => {
   const [saveModal, setSaveModal] = useState(false);
   const [openAudit, setOpenAudit] = useState(false);
   const [expanded, setExpanded] = useState(false);
-
-  useEffect(() => {
-    dispatch({ type: 'GET_ASSESSMENTS', payload: { docId } });
-  }, []);
 
   const setAssesmentData = () => {
     const data = cloneDeep(assessments.data.assessments[0].data);
@@ -110,7 +113,7 @@ const Assessment = ({ docId }) => {
         delete objClone.assessment_text;
         delete objClone.table_link_text;
         delete objClone.table_roi_id;
-
+        delete objClone.is_default;
         if (isEmptyObj(objClone)) {
           emptyObj.push(element);
         } else {
@@ -130,6 +133,13 @@ const Assessment = ({ docId }) => {
 
   const getFinalDataFromTable = (data) => {
     setDataFetch(false);
+    setEditEnabled(false);
+    setShowModal(false);
+    data.forEach((item) => {
+      if (item.hasOwnProperty('is_default')) {
+        delete item['is_default'];
+      }
+    });
     dispatch({ type: 'POST_ASSESSMENT', payload: { docId, body: data } });
   };
 
@@ -211,67 +221,73 @@ const Assessment = ({ docId }) => {
         buttonOneHandler={handleCloseModal}
         buttonTwoHandler={handleModalSave}
       />
-      <Modal
-        className="full-view-modal"
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        buttonProps={[]}
-        title="Assessments"
-        hideButtons={true}
-      >
-        {assessments?.data && (
-          <AssessmentContent
-            assessments={validData}
-            isEditEnabled={isEditEnabled}
-            showModal={showModal}
-            columns={assessments.data.columns}
-            dropDownData={dropDownData}
-            handleSelection={handleSelection}
-            handleAdd={handleAdd}
-            getFinalDataFromTable={getFinalDataFromTable}
-            datafetch={datafetch}
-            handleEdit={handleEdit}
-            handleSaveData={handleSaveData}
-            handleUndo={handleUndo}
-            handleTableChange={handleTableChange}
-          />
-        )}
-      </Modal>
+      {showModal && (
+        <Modal
+          className="full-view-modal"
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          buttonProps={[]}
+          title="Assessments"
+          hideButtons={true}
+        >
+          {validData.length > 0 && assessments?.data?.columns.length > 0 && (
+            <AssessmentContent
+              assessments={validData}
+              isEditEnabled={isEditEnabled}
+              showModal={showModal}
+              columns={assessments.data.columns}
+              dropDownData={dropDownData}
+              handleSelection={handleSelection}
+              handleAdd={handleAdd}
+              getFinalDataFromTable={getFinalDataFromTable}
+              datafetch={datafetch}
+              handleEdit={handleEdit}
+              handleSaveData={handleSaveData}
+              handleUndo={handleUndo}
+              handleTableChange={handleTableChange}
+            />
+          )}
+        </Modal>
+      )}
       <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
         <AccordionSummary>
-          <div className="accordion_summary_container">
+          <div
+            className="accordion_summary_container"
+            data-testId="assessment-accordion"
+          >
             <Typography>Assessments</Typography>
-            <div className="metadata-flex">
-              <span data-testId="expand" role="presentation">
-                <OpenNew
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleExpand(e);
-                  }}
-                />
+            <div className="metadata-flex" data-testId="assessment-container">
+              <span
+                data-testId="expand-assessment"
+                role="presentation"
+                onClick={(e) => {
+                  handleExpand(e);
+                }}
+              >
+                <OpenNew style={{ marginRight: '10px' }} />
               </span>
-              <span data-testId="eyeIcon" role="presentation">
-                <EyeShow
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleAudit(e);
-                  }}
-                />
+              <span
+                data-testId="eyeIcon-assessment"
+                role="presentation"
+                onClick={(e) => {
+                  handleAudit(e);
+                }}
+              >
+                <EyeShow style={{ paddingRight: '10px' }} />
               </span>
               {!isEditEnabled ? (
-                <span data-testId="metadatapencil">
-                  <Pencil
-                    className="metadata-plus-size"
-                    data-testid="handle-edit"
-                    onClick={(e) => {
-                      handleEdit(e);
-                    }}
-                  />
+                <span
+                  data-testid="edit-assessment"
+                  onClick={(e) => {
+                    handleEdit(e);
+                  }}
+                >
+                  <Pencil className="metadata-plus-size" />
                 </span>
               ) : (
                 <>
                   <span
-                    data-testId="metadatasave"
+                    data-testId="metadatasave-assessment"
                     onClick={(e) => {
                       handleSaveData(e);
                     }}
@@ -280,7 +296,7 @@ const Assessment = ({ docId }) => {
                     <Save className="metadata-plus-size mR" />
                   </span>
                   <span
-                    data-testId="metadatadiscard"
+                    data-testId="discard-assessment"
                     onClick={(e) => {
                       handleUndo(e);
                     }}
@@ -294,24 +310,34 @@ const Assessment = ({ docId }) => {
           </div>
         </AccordionSummary>
         <AccordionDetails className="assessment-detail">
-          {assessments?.data && (
-            <AssessmentContent
-              assessments={validData}
-              isEditEnabled={isEditEnabled}
-              showModal={showModal}
-              columns={assessments.data.columns}
-              dropDownData={dropDownData}
-              handleSelection={handleSelection}
-              handleAdd={handleAdd}
-              getFinalDataFromTable={getFinalDataFromTable}
-              datafetch={datafetch}
-              handleTableChange={handleTableChange}
-            />
+          {validData.length > 0 &&
+            assessments?.data?.columns.length > 0 &&
+            !showModal && (
+              <AssessmentContent
+                assessments={validData}
+                isEditEnabled={isEditEnabled}
+                showModal={showModal}
+                columns={assessments?.data?.columns}
+                dropDownData={dropDownData}
+                handleSelection={handleSelection}
+                handleAdd={handleAdd}
+                getFinalDataFromTable={getFinalDataFromTable}
+                datafetch={datafetch}
+                handleTableChange={handleTableChange}
+                handleEdit={handleEdit}
+                handleSaveData={handleSaveData}
+                handleUndo={handleUndo}
+              />
+            )}
+          {validData.length === 0 && (
+            <div className="no-data-section">
+              <label>No data</label>
+            </div>
           )}
         </AccordionDetails>
       </Accordion>
       <Popover
-        data-testId="metadata-popover"
+        data-testId="metadata-popover-assessment"
         open={!!openAudit}
         anchorEl={openAudit}
         onClose={() => setOpenAudit(null)}

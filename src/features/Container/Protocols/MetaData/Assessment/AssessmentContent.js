@@ -26,18 +26,17 @@ const AssessmentContent = ({
 }) => {
   const [selected, setSelected] = useState('');
   return (
-    <div className="asssessment-content">
+    <div className="asssessment-content" data-testId="assessment-content">
       {showModal && (
         <div className="modal-icons">
           {!isEditEnabled ? (
-            <span data-testId="metadatapencil">
-              <Pencil
-                className="metadata-plus-size"
-                data-testid="handle-edit"
-                onClick={(e) => {
-                  handleEdit(e);
-                }}
-              />
+            <span
+              data-testId="edit-modal-assessment"
+              onClick={(e) => {
+                handleEdit(e);
+              }}
+            >
+              <Pencil className="metadata-plus-size" />
             </span>
           ) : (
             <>
@@ -51,7 +50,7 @@ const AssessmentContent = ({
                 <Save className="metadata-plus-size mR" />
               </span>
               <span
-                data-testId="metadatadiscard"
+                data-testId="discard-assessmentContent"
                 onClick={(e) => {
                   handleUndo(e);
                 }}
@@ -63,7 +62,7 @@ const AssessmentContent = ({
           )}
         </div>
       )}
-      {assessments.length && (
+      {assessments?.length && (
         <AssessmentVisitTable
           data={assessments}
           columns={columns}
@@ -81,6 +80,7 @@ const AssessmentContent = ({
           <Select
             className="assessment-select"
             value={selected}
+            data-testId={`select-assessment`}
             onChange={(e) => {
               handleSelection(e);
               setSelected(e.target.value);
@@ -89,10 +89,11 @@ const AssessmentContent = ({
             canDeselect={false}
             size="small"
           >
-            {dropDownData.map((elem) => (
+            {dropDownData.map((elem, i) => (
               <MenuItem
                 key={uuidv4()}
                 value={elem.id}
+                data-testId={`option-assessmen-${i}`}
                 children={
                   <span
                     dangerouslySetInnerHTML={{ __html: elem.assessment_text }}
@@ -102,8 +103,12 @@ const AssessmentContent = ({
             ))}
           </Select>
           <div className="plus-containter">
-            <span role="presentation">
-              <Plus onClick={handleAdd} />
+            <span
+              role="presentation"
+              data-testId="assessment-plus"
+              onClick={handleAdd}
+            >
+              <Plus />
             </span>
           </div>
         </div>

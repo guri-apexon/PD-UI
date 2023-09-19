@@ -19,6 +19,7 @@ import cloneDeep from 'lodash/cloneDeep';
 import { toast } from 'react-toastify';
 import RestricModal from '../Modal';
 import { discardModalLabels, saveModalLabels } from '../Assessment/Assessment';
+import { v4 as uuidv4 } from 'uuid';
 
 const visitTimeColumns = [
   {
@@ -68,20 +69,26 @@ const createRowData = (row) => {
   Object.keys(obj).forEach(function (index) {
     obj[index] = '';
   });
-  obj.id = Math.random();
+  obj.id = uuidv4();
   obj.doc_id = row.doc_id;
   obj.visit_id = row.visit_id;
   obj.table_roi_id = row.table_roi_id;
-  obj.visit_label = 'Visit Label';
+  obj.visit_sequence = 'Vx';
   obj.operation = 'create';
   obj.status = 'added';
+  obj.is_default = false;
 
   return obj;
 };
 
 const isEmptyObj = (obj) => {
   const isEmpty = Object.values(obj).every((value) => {
-    if (value === null || value === undefined || value === '') {
+    if (
+      value === null ||
+      value === undefined ||
+      value === '' ||
+      value === 'N'
+    ) {
       return true;
     }
     return false;
@@ -122,14 +129,15 @@ const Visits = ({ docId }) => {
     setColumnArray(finalColumns);
   };
 
-  useEffect(() => {
-    dispatch({ type: 'GET_VISITS', payload: { docId } });
-  }, []);
-
   const getFinalDataFromTable = (data) => {
     setDataFetch(false);
     setEditEnabled(false);
     setShowModal(false);
+    data.forEach((item) => {
+      if (item.hasOwnProperty('is_default')) {
+        delete item['is_default'];
+      }
+    });
     dispatch({ type: 'POST_VISIT', payload: { docId, body: data } });
   };
 
@@ -145,7 +153,7 @@ const Visits = ({ docId }) => {
         delete objClone.doc_id;
         delete objClone.visit_id;
         delete objClone.table_roi_id;
-        delete objClone.visit_label;
+        delete objClone.visit_sequence;
         delete objClone.epoch_timepoint;
         delete objClone.cycle_timepoint;
         delete objClone.visit_timepoint;
@@ -154,6 +162,7 @@ const Visits = ({ docId }) => {
         delete objClone.day_timepoint;
         delete objClone.window_timepoint;
         delete objClone.month_timepoint;
+        delete objClone.is_default;
 
         if (isEmptyObj(objClone)) {
           emptyObj.push(element);
@@ -167,7 +176,7 @@ const Visits = ({ docId }) => {
   };
 
   useEffect(() => {
-    if (visitsData?.data?.visit_schedule[0].data.length) {
+    if (visitsData?.data?.visit_schedule[0]?.data.length) {
       setVisitData();
     }
   }, [visitsData]);
@@ -269,94 +278,16 @@ const Visits = ({ docId }) => {
         buttonOneHandler={handleCloseModal}
         buttonTwoHandler={handleModalSave}
       />
-      <Modal
-        className="full-view-modal"
-        open={showModal}
-        onClose={() => setShowModal(false)}
-        buttonProps={[]}
-        title="Visit Schedule"
-        hideButtons={true}
-      >
-        {validData.length && columnArray.length && (
-          <VisitContent
-            data={validData}
-            columns={columnArray}
-            isEditEnabled={isEditEnabled}
-            dropDownData={dropDownData}
-            handleSelection={handleSelection}
-            showModal={showModal}
-            handleAdd={handleAdd}
-            getFinalDataFromTable={getFinalDataFromTable}
-            datafetch={datafetch}
-            handleEdit={handleEdit}
-            handleSaveData={handleSaveData}
-            handleUndo={handleUndo}
-            handleTableChange={handleTableChange}
-            showSettings={showSettings}
-            setShowSetting={setShowSetting}
-            handleColumnSelection={handleColumnSelection}
-            visitColumns={visitColumns}
-          />
-        )}
-      </Modal>
-      <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
-        <AccordionSummary>
-          <div className="accordion_summary_container">
-            <Typography>Visit Schedule</Typography>
-            <div className="metadata-flex">
-              <span data-testId="expand" role="presentation">
-                <OpenNew
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleExpand(e);
-                  }}
-                />
-              </span>
-              <span data-testId="eyeIcon" role="presentation">
-                <EyeShow
-                  style={{ paddingRight: '10px' }}
-                  onClick={(e) => {
-                    handleAudit(e);
-                  }}
-                />
-              </span>
-              {!isEditEnabled ? (
-                <span data-testId="metadatapencil">
-                  <Pencil
-                    className="metadata-plus-size"
-                    data-testid="handle-edit"
-                    onClick={(e) => {
-                      handleEdit(e);
-                    }}
-                  />
-                </span>
-              ) : (
-                <>
-                  <span
-                    data-testId="metadatasave"
-                    onClick={(e) => {
-                      handleSaveData(e);
-                    }}
-                    role="presentation"
-                  >
-                    <Save className="metadata-plus-size mR" />
-                  </span>
-                  <span
-                    data-testId="metadatadiscard"
-                    onClick={(e) => {
-                      handleUndo(e);
-                    }}
-                    role="presentation"
-                  >
-                    <Undo className="metadata-plus-size" />
-                  </span>
-                </>
-              )}
-            </div>
-          </div>
-        </AccordionSummary>
-        <AccordionDetails className="assessment-detail">
-          {validData.length && columnArray.length && (
+      {showModal && (
+        <Modal
+          className="full-view-modal"
+          open={showModal}
+          onClose={() => setShowModal(false)}
+          buttonProps={[]}
+          title="Visit Schedule"
+          hideButtons={true}
+        >
+          {validData.length > 0 && columnArray.length > 0 && (
             <VisitContent
               data={validData}
               columns={columnArray}
@@ -376,6 +307,95 @@ const Visits = ({ docId }) => {
               handleColumnSelection={handleColumnSelection}
               visitColumns={visitColumns}
             />
+          )}
+        </Modal>
+      )}
+      <Accordion expanded={expanded} onChange={() => setExpanded(!expanded)}>
+        <AccordionSummary>
+          <div
+            className="accordion_summary_container"
+            data-testId="assessment-accordion"
+          >
+            <Typography>Visit Schedule</Typography>
+            <div className="metadata-flex" data-testId="assessment-container">
+              <span
+                data-testId="expand-assessment"
+                role="presentation"
+                onClick={(e) => {
+                  handleExpand(e);
+                }}
+              >
+                <OpenNew style={{ marginRight: '10px' }} />
+              </span>
+              <span
+                role="presentation"
+                data-testId="eyeIcon-assessment"
+                onClick={(e) => {
+                  handleAudit(e);
+                }}
+              >
+                <EyeShow style={{ paddingRight: '10px' }} />
+              </span>
+              {!isEditEnabled ? (
+                <span
+                  data-testid="edit-assessment"
+                  onClick={(e) => {
+                    handleEdit(e);
+                  }}
+                >
+                  <Pencil className="metadata-plus-size" />
+                </span>
+              ) : (
+                <>
+                  <span
+                    data-testId="metadatasave-assessment"
+                    onClick={(e) => {
+                      handleSaveData(e);
+                    }}
+                    role="presentation"
+                  >
+                    <Save className="metadata-plus-size mR" />
+                  </span>
+                  <span
+                    data-testId="discard-assessment"
+                    onClick={(e) => {
+                      handleUndo(e);
+                    }}
+                    role="presentation"
+                  >
+                    <Undo className="metadata-plus-size" />
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+        </AccordionSummary>
+        <AccordionDetails className="assessment-detail">
+          {validData.length > 0 && columnArray.length > 0 && !showModal && (
+            <VisitContent
+              data={validData}
+              columns={columnArray}
+              isEditEnabled={isEditEnabled}
+              dropDownData={dropDownData}
+              handleSelection={handleSelection}
+              showModal={showModal}
+              handleAdd={handleAdd}
+              getFinalDataFromTable={getFinalDataFromTable}
+              datafetch={datafetch}
+              handleEdit={handleEdit}
+              handleSaveData={handleSaveData}
+              handleUndo={handleUndo}
+              handleTableChange={handleTableChange}
+              showSettings={showSettings}
+              setShowSetting={setShowSetting}
+              handleColumnSelection={handleColumnSelection}
+              visitColumns={visitColumns}
+            />
+          )}
+          {validData.length === 0 && (
+            <div className="no-data-section">
+              <label>No data</label>
+            </div>
           )}
         </AccordionDetails>
       </Accordion>
