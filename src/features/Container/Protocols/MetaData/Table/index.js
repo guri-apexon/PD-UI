@@ -123,8 +123,8 @@ const makeEditableAutocompleteCell = (options) =>
               size="small"
               fullWidth
               canDeselect={false}
-              value={row.editedRow[key]}
-              onChange={(e) => row.editRow(key, e.target.value)}
+              value={value}
+              onChange={handleChange}
               {...fieldStyles}
             >
               {options.map((option) => (
