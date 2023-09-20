@@ -41,6 +41,10 @@ function EditableCell({ row, column: { accessor: key } }) {
       setType(e.target.value ? e.target.value : 'string');
       setVal('');
       setDateValue('');
+    } else if (type === 'integer') {
+      if (/^[^.]*\d+$/.test(e?.target?.value)) {
+        setVal(e?.target?.value);
+      }
     } else {
       setVal(e?.target?.value);
     }

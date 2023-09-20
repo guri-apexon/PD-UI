@@ -47,7 +47,7 @@ export function ValueField({
     handleChange(e);
   };
   const metaDataType = (type) => {
-    return ['string', 'array'].includes(type) ? 'text' : 'number';
+    return ['string', 'array', 'integer'].includes(type) ? 'text' : 'number';
   };
 
   const isNotesOrConfidence = keyName === 'note' || keyName === 'confidence';
