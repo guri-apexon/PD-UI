@@ -187,6 +187,13 @@ const initialState = {
         message: '',
       },
     },
+    user: {
+      userDetail: {
+        username: 'Subha',
+        userId: 'u1020640',
+        email: 'test@iqvia.com',
+      },
+    },
   },
 };
 
@@ -581,5 +588,143 @@ describe('Should render document tab', () => {
     );
 
     expect(mockCallApi).toHaveBeenCalledTimes(0);
+  });
+  test('Should click on one checkbox and click download', () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState,
+    );
+    const checkbox1 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const dropButton = container.getByRole('button', {
+      name: 'Compare Result',
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByTestId('browser-view');
+    fireEvent.click(item1);
+  });
+  test('Should click on one checkbox and click download', () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState,
+    );
+    const checkbox1 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const dropButton = container.getByRole('button', {
+      name: 'Compare Result',
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByTestId('csv');
+    fireEvent.click(item1);
+  });
+  test('Should click on one checkbox and click download', () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState,
+    );
+    const checkbox1 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const dropButton = container.getByRole('button', {
+      name: 'Compare Result',
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByTestId('excel');
+    fireEvent.click(item1);
+  });
+  test('Should click on one checkbox and click download', () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState,
+    );
+    const checkbox1 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const dropButton = container.getByRole('button', {
+      name: 'Compare Result',
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByTestId('excel-toolip');
+    fireEvent.click(item1);
+  });
+  test('Should click on one checkbox and click download', () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState,
+    );
+    const checkbox1 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const dropButton = container.getByRole('button', {
+      name: 'Compare Result',
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByTestId('csv-toolip');
+    fireEvent.click(item1);
+  });
+  test('Should click on one checkbox and click download', () => {
+    const handleChangeTab = jest.fn();
+    const container = render(
+      <MemoryRouter>
+        <Documents handleChangeTab={handleChangeTab} />
+      </MemoryRouter>,
+      initialState,
+    );
+    const checkbox1 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[0]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox1);
+    const checkbox2 = container.getByTestId('associate-document-tab')
+      .children[0].children[0].children[1].children[0].children[1].children[1]
+      .children[0].children[0].children[0].children[0];
+    fireEvent.click(checkbox2);
+    const dropButton = container.getByRole('button', {
+      name: 'Compare Result',
+    });
+    fireEvent.click(dropButton);
+    const item1 = screen.getByTestId('browser-view-toolip');
+    fireEvent.click(item1);
   });
 });

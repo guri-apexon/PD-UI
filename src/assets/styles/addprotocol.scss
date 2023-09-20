@@ -11,6 +11,12 @@
   li {
     font-size: 13px;
   }
+  .view-browser-header {
+    font-weight: 600;
+  }
+  .view-browser {
+    list-style-type: none;
+  }
 }
 .version-text-field {
   .asteric {
@@ -30,14 +36,14 @@
 }
 
 #add-protocol-modal {
-  [class^="MuiFormLabel-asterisk-"] {
+  [class^='MuiFormLabel-asterisk-'] {
     font-size: 16px;
   }
 
   .a-MuiInputBase-inputMarginDense {
     font-size: 16px;
   }
-  [class^="InternalDialogTitle-padding-"],
+  [class^='InternalDialogTitle-padding-'],
   .InternalDialogTitle-padding-220 {
     padding: 24px 24px 12px 24px;
     border-bottom: 1px solid #d9d9d9;
@@ -55,17 +61,17 @@
   .MuiGrid-spacing-xs-2 > .MuiGrid-item {
     padding: 0;
   }
-  .a-MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]
+  .a-MuiAutocomplete-inputRoot[class*='MuiOutlinedInput-root']
     .a-MuiAutocomplete-input:first-child {
     border: none;
   }
   .autocomplete-class {
     margin-top: 0px;
     margin-bottom: 8px;
-    .a-MuiInputBase-root.Mui-error input[aria-invalid="true"] {
+    .a-MuiInputBase-root.Mui-error input[aria-invalid='true'] {
       border: none !important;
     }
-    .MuiInputBase-root.Mui-error input[aria-invalid="true"] {
+    .MuiInputBase-root.Mui-error input[aria-invalid='true'] {
       border: 2px solid #e20000 !important;
       border: none !important;
     }
@@ -74,7 +80,7 @@
     display: none;
   }
   .sponsor-textbox-container {
-    [class^="MuiFormControl-marginNormal-"] {
+    [class^='MuiFormControl-marginNormal-'] {
       margin-bottom: 0;
     }
     position: relative;
@@ -106,7 +112,7 @@
     position: relative;
     font-size: 16px;
   }
-  [class^="MuiFormControl-root-"] {
+  [class^='MuiFormControl-root-'] {
     margin-top: 0px;
   }
   .emphasize {
