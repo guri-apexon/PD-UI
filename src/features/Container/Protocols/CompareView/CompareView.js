@@ -4,8 +4,8 @@ import { Apis } from '../../../../utils/api';
 import { getViewerUrlSignature } from './utils';
 
 function CompareView({ isModal, setIsModal, identifier }) {
-  const accountId = process.env.REACT_APP_DRAFTABLE_ACCOUNT_ID;
-  const authToken = process.env.REACT_APP_DRAFTABLE_TOKEN;
+  const accountId = 'LFJCPS-test'; // process.env.REACT_APP_DRAFTABLE_ACCOUNT_ID;
+  const authToken = 'ba9aa669ca6823bdeac636f62d521487'; // process.env.REACT_APP_DRAFTABLE_TOKEN;
   const sessionDuration = new Date(new Date().getTime() + 15 * 60000);
   const futureUTCTime = new Date(sessionDuration.toUTCString());
   const validUntilTimestamp = new Date(futureUTCTime).getTime() / 1000;
