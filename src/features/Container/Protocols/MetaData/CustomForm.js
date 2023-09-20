@@ -40,15 +40,17 @@ export function ValueField({
   handleDateChange,
   handleBlur,
   attrDisabled,
+  possibleValues = [],
 }) {
   const userDetails = useSelector(loggedUser);
   const onTypeChange = (e) => {
     handleChange(e);
   };
   const metaDataType = (type) => {
-    return ['string', 'array'].includes(type) ? 'text' : 'number';
+    return ['string', 'array', 'integer'].includes(type) ? 'text' : 'number';
   };
 
+  const isNotesOrConfidence = keyName === 'note' || keyName === 'confidence';
   return (
     <Grid
       container
@@ -58,22 +60,43 @@ export function ValueField({
     >
       <Grid item xs={11} className="fieldContainer">
         <div className="valueText">
-          {METADATA_CONSTANTS.TYPES.includes(type) && (
-            <TextField
+          {possibleValues.length !== 0 && !isNotesOrConfidence && (
+            <Select
+              placeholder="Select Value"
               label=""
-              placeholder="Enter Value"
-              type={metaDataType(type)}
               name={keyName}
               fullWidth
               value={inputValue}
-              title={inputValue}
-              inputProps={{ 'data-testid': 'customeform-textField-value' }}
-              onChange={(e) => handleChange(e)}
+              onChange={handleChange}
               onBlur={handleBlur}
-            />
+              inputProps={{
+                'data-testid': 'customeform-textField-checkbox2',
+              }}
+            >
+              {possibleValues.map((each) => (
+                <MenuItem key={each?.label} value={each?.label}>
+                  {each?.label}
+                </MenuItem>
+              ))}
+            </Select>
           )}
+          {(isNotesOrConfidence || possibleValues.length === 0) &&
+            METADATA_CONSTANTS.TYPES.includes(type) && (
+              <TextField
+                label=""
+                placeholder="Enter Value"
+                type={metaDataType(type)}
+                name={keyName}
+                fullWidth
+                value={inputValue}
+                title={inputValue}
+                inputProps={{ 'data-testid': 'customeform-textField-value' }}
+                onChange={(e) => handleChange(e)}
+                onBlur={handleBlur}
+              />
+            )}
 
-          {['date'].includes(type) && (
+          {possibleValues.length === 0 && ['date'].includes(type) && (
             <DatePicker
               className="date-field"
               name={keyName}
@@ -86,7 +109,7 @@ export function ValueField({
               onInputChange={(inputValue) => handleChange(inputValue)}
             />
           )}
-          {['boolean'].includes(type) && (
+          {possibleValues.length === 0 && ['boolean'].includes(type) && (
             <Select
               placeholder="Select Value"
               label=""
@@ -107,7 +130,7 @@ export function ValueField({
             </Select>
           )}
 
-          {keyName !== 'note' && keyName !== 'confidence' && (
+          {!isNotesOrConfidence && (
             <Select
               label=""
               name="attr_type"
@@ -150,4 +173,5 @@ ValueField.propTypes = {
   handleDateChange: PropTypes.isRequired,
   dateValue: PropTypes.isRequired,
   attrDisabled: PropTypes.isRequired,
+  possibleValues: PropTypes.isRequired,
 };

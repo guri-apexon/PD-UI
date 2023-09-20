@@ -47,6 +47,8 @@ import {
   getEnrichedData,
   setActiveTOC,
   getPreferredTerm,
+  getAssessments,
+  getVisits,
 } from './protocolSlice';
 import BASE_URL, { httpCall, BASE_URL_8000, Apis } from '../../../utils/api';
 import { PROTOCOL_RIGHT_MENU } from './Constant/Constants';
@@ -1093,6 +1095,132 @@ export function* getDocumentSectionLock(action) {
     yield put(setWorkFlowSubmitButton(false));
   }
 }
+export function* fetchAssessments(action) {
+  const respData = {
+    loading: true,
+    data: null,
+    error: null,
+  };
+  yield put(getAssessments(respData));
+  const {
+    payload: { docId },
+  } = action;
+  // const userId = yield getState();
+  try {
+    const config = {
+      url: `${BASE_URL}${Apis.METADATA}/assessments_operations?doc_id=${docId}`,
+      // url: '/assessment.json',
+      method: 'GET',
+      checkAuth: true,
+      headers: jsonContentHeader,
+    };
+    const response = yield call(httpCall, config);
+    const respData = {
+      loading: false,
+      data: response.data,
+      error: null,
+    };
+    yield put(getAssessments(respData));
+  } catch (error) {
+    const respData = {
+      loading: false,
+      data: null,
+      error: 'ERROR',
+    };
+    yield put(getAssessments(respData));
+  }
+}
+export function* postAssessments(action) {
+  const {
+    payload: { body, docId },
+  } = action;
+  try {
+    const config = {
+      url: `${BASE_URL}${Apis.METADATA}/assessments_operations`,
+      // url: '/assessment.json',
+      method: 'POST',
+      data: { data: body },
+      checkAuth: true,
+      headers: jsonContentHeader,
+    };
+    const response = yield call(httpCall, config);
+
+    if (response.success) {
+      yield put({
+        type: 'GET_ASSESSMENTS',
+        payload: { docId },
+      });
+      toast.success(response.data.response);
+    } else {
+      toast.error('Data insertion failed');
+    }
+  } catch (error) {
+    toast.error('Data insertion failed');
+  }
+}
+export function* fetchVisits(action) {
+  const respData = {
+    loading: true,
+    data: null,
+    error: null,
+  };
+  yield put(getVisits(respData));
+  const {
+    payload: { docId },
+  } = action;
+  // const userId = yield getState();
+  try {
+    const config = {
+      url: `${BASE_URL}${Apis.METADATA}/visits_schedule_operations?doc_id=${docId}`,
+      // url: '/visits.json',
+      method: 'GET',
+      checkAuth: true,
+      headers: jsonContentHeader,
+    };
+    const response = yield call(httpCall, config);
+    const respData = {
+      loading: false,
+      data: response.data,
+      error: null,
+    };
+    yield put(getVisits(respData));
+  } catch (error) {
+    const respData = {
+      loading: false,
+      data: null,
+      error: 'ERROR',
+    };
+    yield put(getVisits(respData));
+  }
+}
+
+export function* postVisits(action) {
+  const {
+    payload: { body, docId },
+  } = action;
+  try {
+    const config = {
+      url: `${BASE_URL}${Apis.METADATA}/visits_schedule_operations`,
+      // url: '/assessment.json',
+      method: 'POST',
+      data: { data: body },
+      checkAuth: true,
+      headers: jsonContentHeader,
+    };
+    const response = yield call(httpCall, config);
+    if (response.success) {
+      yield put({
+        type: 'GET_VISITS',
+        payload: { docId },
+      });
+      toast.success(response.data.response);
+    } else {
+      toast.error('Data insertion failed');
+    }
+  } catch (error) {
+    toast.error('Data insertion failed');
+  }
+}
 
 export function* watchProtocolAsync() {
   //   yield takeEvery('INCREMENT_ASYNC_SAGA', incrementAsync)
@@ -1137,6 +1265,10 @@ export function* watchProtocolViews() {
   yield takeEvery('RESET_ALL_DIPA_VIEW', resetAllDipaViewDataByCategory);
   yield takeLatest('RESET_SOA_DATA', resetSOAData);
   yield takeEvery('CREATE_LABDATA_TABLE', handleCreateLabDataTable);
+  yield takeEvery('GET_ASSESSMENTS', fetchAssessments);
+  yield takeEvery('GET_VISITS', fetchVisits);
+  yield takeEvery('POST_ASSESSMENT', postAssessments);
+  yield takeEvery('POST_VISIT', postVisits);
 }
 
 // notice how we now only export the rootSaga
