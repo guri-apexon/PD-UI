@@ -27,7 +27,7 @@ import { blobToFormData } from './CompareView/utils';
 
 const message1 = 'Please Select Base Document for Compare';
 const message2 = 'Please Select Comparator Document for Compare';
-const authToken = 'ba9aa669ca6823bdeac636f62d521487'; // process.env.REACT_APP_DRAFTABLE_TOKEN;
+const authToken = process.env.REACT_APP_DRAFTABLE_TOKEN;
 function Documents({ handleChangeTab }) {
   const summary = useSelector(protocolSummary);
   const userId1 = useSelector(userId);
@@ -105,24 +105,6 @@ function Documents({ handleChangeTab }) {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [tooltip1Ref, tooltip2Ref]);
-
-  useEffect(() => {
-    fetch(
-      'https://dev-protocoldigitalization-compare.work.iqvia.com/api/v1/comparisons',
-      {
-        method: 'GET',
-        headers: {
-          authorization: `Token ${authToken}`,
-          // accept: 'application/json',
-        },
-        // credentials: 'same-origin',
-        // referrerPolicy: 'strict-origin-when-cross-origin',
-        // body: null,
-        // mode: 'cors',
-        // credentials: 'include',
-      },
-    );
-  }, []);
 
   const setProtocolToDownload = (data) => {
     if (protocolSelected.source) {
@@ -281,7 +263,7 @@ function Documents({ handleChangeTab }) {
         },
         body: blobToFormData(respsource.data, respTarget.data),
       };
-      fetch(`${Apis.DRAFTABLE_VIEWER}`, config)
+      fetch(`${Apis.DRAFTABLE_API_URL}/comparisons`, config)
         .then((response) => response.json())
         .then((data) => {
           setLoader(false);
