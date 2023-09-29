@@ -27,7 +27,7 @@ import { blobToFormData } from './CompareView/utils';
 
 const message1 = 'Please Select Base Document for Compare';
 const message2 = 'Please Select Comparator Document for Compare';
-const authToken = process.env.REACT_APP_DRAFTABLE_TOKEN;
+const authToken = 'eeb76d7f7549aa3bd704e0ddcb10a6c1'; // process.env.REACT_APP_DRAFTABLE_TOKEN;
 function Documents({ handleChangeTab }) {
   const summary = useSelector(protocolSummary);
   const userId1 = useSelector(userId);
