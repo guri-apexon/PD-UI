@@ -205,6 +205,9 @@ let UIhost;
 
 /* eslint-enable */
 const environment = process.env.REACT_APP_ENV;
+const envName = ['local', 'dev', ''].includes(environment)
+  ? 'dev'
+  : environment;
 if (environment === 'local') {
   backendHost = 'https://dev-protocoldigitalization-api.work.iqvia.com';
   // backendHost = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
@@ -270,8 +273,7 @@ export const Apis = {
   SECTION_LOCK: '/api/section_lock',
   DOCUMENT_SECTION_LOCK: '/api/section_lock/document_lock_status',
   CREATE_LABDATA_TABLE: '/api/lab_data/lab_data_table_create',
-  DRAFTABLE_API_URL:
-    'https://dev-protocoldigitalization-compare.work.iqvia.com/api/v1',
+  DRAFTABLE_API_URL: `https://${envName}-protocoldigitalization-compare.work.iqvia.com/api/v1`,
 };
 
 export const SSO_ENABLED = environment !== 'local';
