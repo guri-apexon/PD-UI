@@ -4,8 +4,8 @@ import { Apis } from '../../../../utils/api';
 import { getViewerUrlSignature } from './utils';
 
 function CompareView({ isModal, setIsModal, identifier }) {
-  const accountId = 'LFJCPS-test'; // process.env.REACT_APP_DRAFTABLE_ACCOUNT_ID;
-  const authToken = 'ba9aa669ca6823bdeac636f62d521487'; // process.env.REACT_APP_DRAFTABLE_TOKEN;
+  const accountId = process.env.REACT_APP_DRAFTABLE_ACCOUNT_ID;
+  const authToken = process.env.REACT_APP_DRAFTABLE_TOKEN;
   const sessionDuration = new Date(new Date().getTime() + 15 * 60000);
   const futureUTCTime = new Date(sessionDuration.toUTCString());
   const validUntilTimestamp = new Date(futureUTCTime).getTime() / 1000;
@@ -21,7 +21,8 @@ function CompareView({ isModal, setIsModal, identifier }) {
     validUntilTimestamp,
   );
 
-  const url = `${Apis.DRAFTABLE_API_URL}/viewer/${accountId}/${identifier}?valid_until=${validUntilTimestamp}&signature=${signature}`;
+  const url = `${Apis.DRAFTABLE_API_URL}/comparisons/viewer/${accountId}/${identifier}?valid_until=${validUntilTimestamp}&signature=${signature}`;
+
   return (
     <Modal
       disableBackdropClick
