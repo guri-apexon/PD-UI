@@ -270,8 +270,8 @@ export const Apis = {
   SECTION_LOCK: '/api/section_lock',
   DOCUMENT_SECTION_LOCK: '/api/section_lock/document_lock_status',
   CREATE_LABDATA_TABLE: '/api/lab_data/lab_data_table_create',
-  DRAFTABLE_VIEWER:
-    'https://dev-protocoldigitalization-compare.work.iqvia.com/api/v1/comparisons',
+  DRAFTABLE_API_URL:
+    'https://dev-protocoldigitalization-compare.work.iqvia.com/api/v1',
 };
 
 export const SSO_ENABLED = environment !== 'local';
